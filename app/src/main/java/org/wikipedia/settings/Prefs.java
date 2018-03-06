@@ -26,6 +26,7 @@ import org.wikipedia.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -480,7 +481,7 @@ public final class Prefs {
     }
 
     public static boolean isReadingListSyncEnabled() {
-        return getBoolean(R.string.preference_key_sync_reading_lists, true);
+        return getBoolean(R.string.preference_key_sync_reading_lists, false);
     }
 
     public static void setReadingListSyncEnabled(boolean enabled) {
@@ -509,6 +510,14 @@ public final class Prefs {
 
     public static void setReadingListsRemoteDeletePending(boolean pending) {
         setBoolean(R.string.preference_key_reading_lists_remote_delete_pending, pending);
+    }
+
+    public static boolean isReadingListsRemoteSetupPending() {
+        return getBoolean(R.string.preference_key_reading_lists_remote_setup_pending, false);
+    }
+
+    public static void setReadingListsRemoteSetupPending(boolean pending) {
+        setBoolean(R.string.preference_key_reading_lists_remote_setup_pending, pending);
     }
 
     public static boolean isInitialOnboardingEnabled() {
@@ -621,6 +630,88 @@ public final class Prefs {
 
     public static void setFeedCustomizeTutorialCardEnabled(boolean enabled) {
         setBoolean(R.string.preference_key_feed_customize_onboarding_card_enabled, enabled);
+    }
+
+    public static String getReadingListsLastSyncTime() {
+        return getString(R.string.preference_key_reading_lists_last_sync_time, "");
+    }
+
+    public static void setReadingListsLastSyncTime(@Nullable String timeStr) {
+        setString(R.string.preference_key_reading_lists_last_sync_time, timeStr);
+    }
+
+    @NonNull public static Set<Long> getReadingListsDeletedIds() {
+        Set<Long> set = new HashSet<>();
+        if (!contains(R.string.preference_key_reading_lists_deleted_ids)) {
+            return set;
+        }
+        //noinspection unchecked
+        Set<Long> tempSet = GsonUnmarshaller.unmarshal(new TypeToken<Set<Long>>(){},
+                getString(R.string.preference_key_reading_lists_deleted_ids, null));
+        if (tempSet != null) {
+            set.addAll(tempSet);
+        }
+        return set;
+    }
+
+    public static void addReadingListsDeletedIds(@NonNull Set<Long> set) {
+        final int maxStoredIds = 256;
+        Set<Long> currentSet = getReadingListsDeletedIds();
+        currentSet.addAll(set);
+        setReadingListsDeletedIds(currentSet.size() < maxStoredIds ? currentSet : set);
+    }
+
+    public static void setReadingListsDeletedIds(@NonNull Set<Long> set) {
+        setString(R.string.preference_key_reading_lists_deleted_ids, GsonMarshaller.marshal(set));
+    }
+
+    @NonNull public static Set<String> getReadingListPagesDeletedIds() {
+        Set<String> set = new HashSet<>();
+        if (!contains(R.string.preference_key_reading_lists_deleted_ids)) {
+            return set;
+        }
+        //noinspection unchecked
+        Set<String> tempSet = GsonUnmarshaller.unmarshal(new TypeToken<Set<String>>(){},
+                getString(R.string.preference_key_reading_list_pages_deleted_ids, null));
+        if (tempSet != null) {
+            set.addAll(tempSet);
+        }
+        return set;
+    }
+
+    public static void addReadingListPagesDeletedIds(@NonNull Set<String> set) {
+        final int maxStoredIds = 256;
+        Set<String> currentSet = getReadingListPagesDeletedIds();
+        currentSet.addAll(set);
+        setReadingListPagesDeletedIds(currentSet.size() < maxStoredIds ? currentSet : set);
+    }
+
+    public static void setReadingListPagesDeletedIds(@NonNull Set<String> set) {
+        setString(R.string.preference_key_reading_list_pages_deleted_ids, GsonMarshaller.marshal(set));
+    }
+
+    public static boolean shouldShowReadingListSyncEnablePrompt() {
+        return getBoolean(R.string.preference_key_show_reading_lists_sync_prompt, true);
+    }
+
+    public static void shouldShowReadingListSyncEnablePrompt(boolean enabled) {
+        setBoolean(R.string.preference_key_show_reading_lists_sync_prompt, enabled);
+    }
+
+    public static boolean shouldShowReadingListSyncMergePrompt() {
+        return getBoolean(R.string.preference_key_show_reading_lists_merge_prompt, true);
+    }
+
+    public static void shouldShowReadingListSyncMergePrompt(boolean enabled) {
+        setBoolean(R.string.preference_key_show_reading_lists_merge_prompt, enabled);
+    }
+
+    public static boolean isReadingListsFirstTimeSync() {
+        return getBoolean(R.string.preference_key_reading_lists_first_time_sync, true);
+    }
+
+    public static void setReadingListsFirstTimeSync(boolean value) {
+        setBoolean(R.string.preference_key_reading_lists_first_time_sync, value);
     }
 
     private Prefs() { }

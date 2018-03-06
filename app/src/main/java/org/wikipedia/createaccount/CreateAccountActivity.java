@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.widget.TextView;
 
 import org.wikipedia.R;
@@ -21,8 +20,8 @@ import org.wikipedia.captcha.CaptchaHandler;
 import org.wikipedia.captcha.CaptchaResult;
 import org.wikipedia.dataclient.WikiSite;
 import org.wikipedia.dataclient.mwapi.MwQueryResponse;
+import org.wikipedia.readinglist.sync.ReadingListSyncAdapter;
 import org.wikipedia.util.FeedbackUtil;
-import org.wikipedia.util.ReleaseUtil;
 import org.wikipedia.util.log.L;
 import org.wikipedia.views.NonEmptyValidator;
 import org.wikipedia.views.WikiErrorView;
@@ -80,8 +79,7 @@ public class CreateAccountActivity extends BaseActivity {
         setContentView(R.layout.activity_create_account);
         ButterKnife.bind(this);
 
-        // TODO: remove when ready for beta/production.
-        if (!ReleaseUtil.isPreBetaRelease()) {
+        if (ReadingListSyncAdapter.isDisabledByRemoteConfig()) {
             onboardingContainer.setVisibility(View.GONE);
         }
 
@@ -90,18 +88,8 @@ public class CreateAccountActivity extends BaseActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.dialog_create_account_checking_progress));
 
-        errorView.setBackClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        errorView.setRetryClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorView.setVisibility(View.GONE);
-            }
-        });
+        errorView.setBackClickListener((v) -> onBackPressed());
+        errorView.setRetryClickListener((v) -> errorView.setVisibility(View.GONE));
 
         wiki = WikipediaApp.getInstance().getWikiSite();
         createAccountInfoClient = new CreateAccountInfoClient();
@@ -112,31 +100,18 @@ public class CreateAccountActivity extends BaseActivity {
                 getString(R.string.create_account_button));
 
         // Don't allow user to submit registration unless they've put in a username and password
-        new NonEmptyValidator(new NonEmptyValidator.ValidationChangedCallback() {
-            @Override
-            public void onValidationChanged(boolean isValid) {
-                createAccountButton.setEnabled(isValid);
-            }
-        }, usernameInput, passwordInput);
+        new NonEmptyValidator((isValid) -> createAccountButton.setEnabled(isValid), usernameInput, passwordInput);
 
         // Don't allow user to continue when they're shown a captcha until they fill it in
-        new NonEmptyValidator(new NonEmptyValidator.ValidationChangedCallback() {
-            @Override
-            public void onValidationChanged(boolean isValid) {
-                createAccountButtonCaptcha.setEnabled(isValid);
-            }
-        }, captchaText);
+        new NonEmptyValidator((isValid) -> createAccountButtonCaptcha.setEnabled(isValid), captchaText);
 
         // Add listener so that when the user taps enter, it submits the captcha
-        captchaText.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    validateThenCreateAccount();
-                    return true;
-                }
-                return false;
+        captchaText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                validateThenCreateAccount();
+                return true;
             }
+            return false;
         });
 
         if (savedInstanceState != null && savedInstanceState.containsKey("result")) {

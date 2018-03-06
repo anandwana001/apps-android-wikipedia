@@ -16,11 +16,11 @@
   <string name="history_item_deleted">%s dihapus dari sejarah</string>
   <string name="history_items_deleted">%d rencana dipadamkan dari sejarah</string>
   <string name="history_item_delete_undo">Nyahbuat</string>
+  <string name="app_settings">Tetapan aplikasi</string>
   <string name="dialog_title_clear_history">Padamkan sejarah pelayaran</string>
   <string name="dialog_message_clear_history">Ini akan menghapuskan kesemua sejarah pelayaran anda serta menutup sebarang tab yang masih terbuka. Adakah anda pasti?</string>
   <string name="dialog_message_clear_history_yes">Ya</string>
   <string name="dialog_message_clear_history_no">Tidak</string>
-  <string name="nav_item_saved_pages">Laman tersimpan</string>
   <string name="share_via">Sebarkan melalui</string>
   <string name="search_redirect_from">Dilencongkan dari %s</string>
   <string name="menu_page_show_tabs">Paparkan tab</string>
@@ -46,8 +46,8 @@
   <string name="map_view_link_text">Paparkan di peta</string>
   <string name="language_count_link_text">Tersedia dalam %d bahasa lain</string>
   <string name="content_license_html">Kandungan ini tersedia dengan lesen &lt;a href=\"%1$s\"&gt;CC BY-SA 3.0&lt;/a&gt; melainkan dinyatakan sebaliknya</string>
-  <string name="edit_save_action_license_logged_in">Dengan menyimpan, anda menyetujui &lt;a href=\"%1$s\"&gt;Syarat-Syarat Penggunaan&lt;/a&gt; serta melepaskan kesemua sumbangan anda tanpa tertarik balik dengan lesen &lt;a href=\"%2$s\"&gt;CC-BY-SA 3.0&lt;/a&gt;.</string>
-  <string name="edit_save_action_license_anon">Dengan menyimpan, anda menyetujui &lt;a href=\"%1$s\"&gt;Syarat-Syarat Penggunaan&lt;/a&gt; serta melepaskan kesemua sumbangan anda tanpa tertarik balik dengan lesen &lt;a href=\"%2$s\"&gt;CC-BY-SA 3.0&lt;/a&gt;. Suntingan akan diatribusikan kepada alamat IP peranti anda. Jika anda &lt;a href=\"https://#login\"&gt;log masuk&lt;/a&gt;, maka privasi anda bertambah baik.</string>
+  <string name="edit_save_action_license_logged_in">Dengan menyimpan, anda menyetujui &lt;a href=\"%1$s\"&gt;Syarat-Syarat Penggunaan&lt;/a&gt; serta melepaskan kesemua sumbangan anda tanpa tertarik balik dengan lesen &lt;a href=\"%2$s\"&gt;CC BY-SA 3.0&lt;/a&gt;.</string>
+  <string name="edit_save_action_license_anon">Dengan menyimpan, anda menyetujui &lt;a href=\"%1$s\"&gt;Syarat-Syarat Penggunaan&lt;/a&gt; serta melepaskan kesemua sumbangan anda tanpa tertarik balik dengan lesen &lt;a href=\"%2$s\"&gt;CC BY-SA 3.0&lt;/a&gt;. Suntingan akan diatribusikan kepada alamat IP peranti anda. Jika anda &lt;a href=\"https://#login\"&gt;log masuk&lt;/a&gt;, maka privasi anda bertambah baik.</string>
   <string name="preference_title_language">Bahasa Wikipedia</string>
   <string name="preference_languages_filter_hint">Cari</string>
   <string name="langlinks_filter_hint">Cari</string>
@@ -72,9 +72,6 @@
   <string name="edit_section_captcha_hint">Ulangi kata-kata dari atas</string>
   <string name="title_captcha">Taipkan captcha</string>
   <string name="edit_section_captcha_reload">Ketik CAPTCHA untuk muat semula</string>
-  <string name="edit_saved_page_refresh">Laman tersimpan ini mungkin sudah ketinggalan dan mesti dimuatkan semula untuk dapat disunting. Inginkah anda memuatkan semula laman ini?</string>
-  <string name="edit_saved_page_refresh_yes">Ya</string>
-  <string name="edit_saved_page_refresh_no">Tidak</string>
   <string name="nav_item_login">Log masuk ke dalam Wikipedia</string>
   <string name="login_username_hint">Nama pengguna</string>
   <string name="login_password_hint">Kata laluan</string>
@@ -125,8 +122,15 @@
   <string name="send_feedback">Hantar maklum balas aplikasi</string>
   <string name="create_account_account_created_toast">Akaun dicipta!</string>
   <string name="preferences_heading_storage_and_syncing">Storan dan penyegerakan</string>
+  <string name="preferences_heading_syncing">Penyegerakan</string>
+  <string name="preferences_heading_data_usage">Data yang digunakan</string>
+  <string name="preferences_heading_experimental">Percubaan</string>
   <string name="preference_title_sync_reading_lists">Menyegerakkan senarai bacaan</string>
-  <string name="preference_summary_sync_reading_lists">Benarkan Wikimedia untuk menyegerakkan senarai bacaan anda apabila anda log masuk</string>
+  <string name="preference_title_sync_reading_lists_from_account">Dayakan penyegerakan senarai bacaan</string>
+  <string name="preference_summary_sync_reading_lists">Segerakkan senarai bacaan merentas peranti yang berbeza dengan menyimpannya ke akaun Wikipedia anda</string>
+  <string name="preference_summary_sync_reading_lists_from_account">Segerakkan senarai bacaan merentas peranti yang berbeza dengan menyimpannya ke akaun Wikipedia anda \"%s\"</string>
+  <string name="preference_dialog_of_turning_off_reading_list_sync_title">Buang senarai bacaan yang diselaraskan dari \"%s\"?</string>
+  <string name="preference_dialog_of_turning_off_reading_list_sync_text">Ini akan memadam semua senarai bacaan yang diselaraskan sebelum ini dari storan jauh. Buang semua senarai yang disegerakkan dari akaun anda \"%s\"?</string>
   <string name="preferences_privacy_settings_heading">Privasi</string>
   <string name="preference_title_eventlogging_opt_in">Laporkan penggunaan</string>
   <string name="preference_summary_eventlogging_opt_in">Benarkan Wikimedia untuk mengumpul maklumat mengenai cara penggunaan aplikasi demi peningkatan kualiti aplikasi</string>
@@ -149,6 +153,7 @@
   <string name="about_wikipedia_url">https://ms.m.wikipedia.org/wiki/Wikipedia:Perihal</string>
   <string name="privacy_policy_url">https://m.wikimediafoundation.org/wiki/Privacy_policy</string>
   <string name="offline_reading_and_data_url">https://www.mediawiki.org/wiki/Wikimedia_Apps/Android_FAQ#Offline_reading_and_data</string>
+  <string name="android_app_faq_url">https://www.mediawiki.org/wiki/Wikimedia_Apps/Android_FAQ</string>
   <string name="terms_of_use_url">https://wikimediafoundation.org/wiki/Terms_of_Use</string>
   <string name="cc_by_sa_3_url">https://creativecommons.org/licenses/by-sa/3.0/deed.ms</string>
   <string name="cc_0_url">https://creativecommons.org/publicdomain/zero/1.0/deed.ms</string>
@@ -177,6 +182,8 @@
   <string name="edit_summary_tag_other_hint">Cara-cara lain anda menambah baik halaman</string>
   <string name="find_next">Carian berikutnya</string>
   <string name="find_previous">Carian sebelumnya</string>
+  <string name="find_first_occurence">Ini ialah kejadian pertama</string>
+  <string name="find_last_occurence">Ini ialah kejadian terakhir</string>
   <string name="abusefilter_title_warn">Suntingan ini mungkin tidak membina. Adakah anda betul-betul mahu menerbitkannya?</string>
   <string name="abusefilter_title_disallow">Suntingan ini tidak boleh diterbitkan. Sila kembali dan suntingnya semula.</string>
   <string name="abusefilter_text_warn">Penapis automatik mendapati suntingan ini berkemungkinan adalah tidak membina. Mungkin ia ada antara yang berikut:&lt;br /&gt;&lt;br /&gt;. Menaip dalam huruf besar&lt;br /&gt;. Mengosongkan rencana atau menspam&lt;br /&gt;. Pautan luar atau imej-imej tidak berkaitan&lt;br /&gt;. Aksara berulang</string>
@@ -264,8 +271,6 @@
   <string name="error_page_does_not_exist">Laman ini tidak wujud</string>
   <string name="view_wiki_error_message_offline">Tidak dapat menyambung ke internet</string>
   <string name="reference_title">Rujukan %s</string>
-  <string name="preference_title_dim_dark_mode_images">Samarkan imej dalam tema gelap</string>
-  <string name="preference_summary_dim_dark_mode_images">Kurangkan kecerahan imej apabila menggunakan tema gelap</string>
   <string name="theme_chooser_dialog_image_dimming_switch_label">Pemalapan imej (dalam tema Gelap)</string>
   <string name="preference_title_prefer_offline_content">Lebih suka kandungan luar talian</string>
   <string name="preference_summary_prefer_offline_content">Menjimatkan penggunaan data dengan memuatkan rencana yang tersedia di luar talian dan bukannya memuatkan versi terkini rencana</string>
@@ -292,7 +297,6 @@
   <string name="color_theme_test_title">Teks contoh</string>
   <string name="color_theme_test_text">Seret gelangsar untuk menukar saiz teks yang digunakan semasa membaca rencana. Untuk menetapkan saiz teks sepanjang seluruh aplikasi, tukar saiz teks sistem anda.</string>
   <string name="preference_title_app_theme">Tema aplikasi</string>
-  <string name="preference_title_color_theme">Tema gelap</string>
   <string name="preference_summary_color_theme">Tukar untuk menggunakan tema warna gelap apl itu</string>
   <string name="text_size_increase">Tingkatkan saiz teks</string>
   <string name="text_size_decrease">Kurangkan saiz teks</string>
@@ -304,7 +308,6 @@
   <string name="reading_list_title_exists">Senarai bacaan \"%s\" telah wujud.</string>
   <string name="reading_list_entry_empty">Sila isikan tajuk.</string>
   <string name="reading_list_added_to_named">Ditambahkan ke %s.</string>
-  <string name="reading_list_added_to_unnamed">Ditambahkan ke senarai bacaan.</string>
   <string name="reading_list_already_exists">Rencana ini sudah terdapat dalam senarai itu.</string>
   <string name="reading_list_added_view_button">Lihat senarai</string>
   <string name="format_reading_list_statistical_summary_singular">1 rencana, %1$.2f MB</string>
@@ -314,8 +317,10 @@
   <string name="reading_list_sort">Isih</string>
   <string name="reading_list_sort_by_name">Isih ikut nama</string>
   <string name="reading_list_sort_by_name_desc">Isih ikut nama (terbalik)</string>
-  <string name="reading_list_sort_by_recent">Isih ikut yang terbaru</string>
-  <string name="reading_list_sort_by_recent_desc">Isih ikut yang terlama</string>
+  <string name="reading_list_sort_by_recent">Isih mengikut tarikh ditambah (terbaru)</string>
+  <string name="reading_list_sort_by_recent_desc">Isih mengikut tarikh ditambah (terlama)</string>
+  <string name="reading_list_sort_by_created">Isih mengikut tarikh diciptakan (terbaru)</string>
+  <string name="reading_list_sort_by_created_desc">Isih mengikut tarikh diciptakan (terlama)</string>
   <string name="reading_list_menu_delete">Padam senarai</string>
   <string name="reading_list_menu_rename">Tukar nama</string>
   <string name="reading_list_menu_edit_description">Sunting keterangan</string>
@@ -331,9 +336,9 @@
   <string name="reading_list_items_deleted">%d rencana dipadamkan dari senarai</string>
   <string name="reading_list_item_delete_undo">Nyahbuat</string>
   <string name="reading_list_deleted">%s dipadamkan</string>
-  <string name="reading_lists_empty">Tiada senarai bacaan lagi</string>
-  <string name="reading_lists_empty_message">Simpan rencana ke senarai bacaan supaya anda boleh melihatnya kemudian, walaupun anda berada di luar talian.</string>
-  <string name="reading_lists_onboarding_intro">Ciptakan senarai bacaan dari rencana yang ingin anda baca nanti, malah ketika anda sedang luring!</string>
+  <string name="saved_list_empty_title">Tiada senarai bacaan lagi</string>
+  <string name="reading_lists_empty_message">Tambah rencana ke senarai untuk dibaca kemudian, walaupun semasa anda berada di luar talian.</string>
+  <string name="reading_lists_onboarding_intro">Tambah rencana ke senarai untuk dibaca kemudian, walaupun semasa anda berada di luar talian!</string>
   <string name="reading_lists_onboarding_for_example">Sebagai contoh</string>
   <string name="reading_lists_onboarding_example1">Tempat untuk berkunjung</string>
   <string name="reading_lists_onboarding_example2">Haiwan kesukaan</string>
@@ -349,18 +354,48 @@
   <string name="reading_list_confirm_remove_article_from_offline">Padam dari luar talian</string>
   <string name="reading_list_confirm_remove_article_from_offline_title">Rencana muncul dalam beberapa senarai</string>
   <string name="reading_list_confirm_remove_article_from_offline_message">%s tidak lagi akan tersedia di luar talian untuk semua senarai baca:</string>
-  <string name="reading_list_sync_reminder_title">Penyegerakan senarai bacaan dimatikan</string>
-  <string name="reading_list_sync_reminder_text">Senarai bacaan anda boleh disegerakkan ke akaun Wikipedia anda jika anda membenarkan penyegerakan dalam tetapan aplikasi.</string>
-  <string name="reading_list_sync_reminder_action">Hidupkan</string>
+  <string name="reading_lists_sync_reminder_title">Hidupkan penyegerakan senarai bacaan?</string>
+  <string name="reading_lists_sync_reminder_text">Rencana yang disimpan untuk membaca senarai kini boleh diselaraskan ke akaun Wikipedia anda. &lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Android_FAQ#Synced_reading_lists\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
+  <string name="reading_lists_sync_reminder_action">Dayakan penyegerakan</string>
   <string name="reading_list_login_reminder_title">Menyegerakkan senarai bacaan</string>
-  <string name="reading_list_login_reminder_text">Senarai bacaan anda kini boleh disimpan ke akaun Wikipedia anda. Hanya log masuk ke akaun anda, dan senarai bacaan anda akan disegerakkan secara automatik.</string>
+  <string name="reading_lists_login_reminder_text">Senarai bacaan kini boleh disegerakkan merentas peranti. Masuk ke akaun Wikipedia anda dan izinkan senarai anda disimpan.</string>
   <string name="reading_lists_confirm_remote_delete">Ini akan memadam sebarang senarai bacaan diselaraskan sebelumnya dari storan jauh. Teruskan?</string>
   <string name="reading_lists_confirm_remote_delete_yes">Ya</string>
   <string name="reading_lists_confirm_remote_delete_no">Tidak</string>
   <string name="reading_list_article_save_in_progress">Rencana sedang dimuat turun, dan ia akan tersedia di luar talian apabila selesai.</string>
   <string name="reading_list_already_contains_selection">Senarai yang dipilih sudah mengandungi semua halaman yang dipilih.</string>
-  <string name="reading_list_added_articles_list_untitled">%d rencana ditambahkan ke senarai bacaan.</string>
   <string name="reading_list_added_articles_list_titled">%1$d ditambahkan ke %2$s</string>
+  <string name="reading_list_delete_confirm">Adakah anda benar-benar ingin memadamkan %s?</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_title">Log masuk untuk mendayakan penyegerakan</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_text">Log masuk untuk membolehkan senarai bacaan anda disimpan ke akaun anda.</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_cancel">Batalkan</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_login">Log masuk</string>
+  <string name="reading_list_turned_sync_off_dialog_title">Penyegerakan senarai bacaan dimatikan</string>
+  <string name="reading_list_turned_sync_off_dialog_text">Penyegerakan senarai bacaan dimatikan untuk akaun anda, dan artikel yang disimpan pada peranti log masuk anda tidak lagi disandarkan. Hidupkan penyegerakan senarai bacaan dalam Tetapan.</string>
+  <string name="reading_list_turned_sync_off_dialog_ok">OK</string>
+  <string name="reading_list_turned_sync_off_dialog_settings">Tetapan</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_title">Hidupkan penyegerakan senarai bacaan?</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_text">Rencana yang disimpan untuk membaca senarai kini boleh diselaraskan ke akaun Wikipedia anda. &lt;a href=\"#faq\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_do_not_show">Jangan tunjukkan saya lagi ini</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_enable_syncing">Dayakan penyegerakan</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_no_thanks">Tak apalah</string>
+  <string name="reading_list_login_option_reminder_dialog_title">Rencana senarai bacaan yang dijumpai</string>
+  <string name="reading_list_login_option_reminder_dialog_text">Rencana disimpan dalam senarai bacaan semasa anda log keluar. Adakah anda ingin menambahkannya ke senarai bacaan dalam akaun anda?</string>
+  <string name="reading_list_login_option_reminder_dialog_yes">Ya, tambahkan ke senarai bacaan saya</string>
+  <string name="reading_list_login_option_reminder_dialog_no">Tidak, padamkan rencana</string>
+  <string name="reading_list_logout_option_reminder_dialog_title">Simpan rencana yang disimpan dalam aplikasinya?</string>
+  <string name="reading_list_logout_option_reminder_dialog_text">Terdapat rencana yang kini disimpan dalam senarai bacaan. Adakah anda ingin menyimpannya di sana selepas log keluar?</string>
+  <string name="reading_list_logout_option_reminder_dialog_yes">Ya, simpan rencana dalam senarai</string>
+  <string name="reading_list_logout_option_reminder_dialog_no">Tidak, padamkan rencana dari senarai</string>
+  <string name="default_reading_list_name">Disimpan</string>
+  <string name="default_reading_list_description">Senarai lalai untuk rencana anda yang disimpan</string>
+  <string name="no_user_lists_title">Atur rencana ke dalam senarai</string>
+  <string name="no_user_lists_msg">Buat senarai tempat untuk pergi ke, topik kegemaran, dan banyak lagi</string>
+  <string name="reading_list_saved_list_rename">%1$s (dicipta pengguna)</string>
+  <string name="split_reading_list_message">Terdapat had %d rencana setiap senarai bacaan. Senarai sedia ada dengan lebih daripada had ini telah dibahagikan kepada beberapa senarai.</string>
+  <string name="reading_list_article_limit_message">Tidak dapat menambah ke senarai ini. Anda telah mencapai had %2$d rencanabagi setiap senarai untuk senarai \"%1$s\".</string>
+  <string name="reading_lists_limit_message">Tidak dapat membuat senarai lain. Anda telah mencapai had 100 senarai bacaan setiap akaun.</string>
+  <string name="feed_reading_lists_sync_onboarding_text">&lt;strong&gt;Segerakkan senarai bacaan&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Senarai bacaan kini boleh disegerakkan merentas peranti. Masuk ke akaun Wikipedia anda dan izinkan senarai anda disimpan.</string>
   <plurals name="reading_list_article_offline_message">
     <item quantity="one">Rencana ini kini boleh didapati di luar talian.</item>
     <item quantity="other">Rencana-rencana ini kini boleh didapati di luar talian.</item>
@@ -378,8 +413,8 @@
   <string name="notification_thanks_title">Anda telah dihargai!</string>
   <string name="notification_thanks">&lt;em&gt;%1$s&lt;/em&gt; menghargai anda untuk suntingan anda pada laman &lt;strong&gt;%2$s&lt;/strong&gt;</string>
   <string name="notification_channel_name">Menyelaraskan</string>
-  <string name="notification_channel_description">Kemajuan penyegerakan</string>
-  <string name="notification_syncing_title">Menyelaraskan %1$d rencana...</string>
+  <string name="notification_channel_description">Kemajuan muat turun</string>
+  <string name="notification_syncing_title">Memuat turun %1$d rencana...</string>
   <string name="notification_syncing_description">%1$d rencana yang tinggal</string>
   <string name="notification_syncing_pause_button">Jedakan</string>
   <string name="notification_syncing_resume_button">Teruskan</string>
@@ -400,7 +435,6 @@
   <string name="menu_feed_overflow_label">Opsyen lain</string>
   <string name="feed_featured_image_share_subject">Gambar pilihan dari Wikimedia Commons</string>
   <string name="feed">Jelajah</string>
-  <string name="view_card_footer_button">Lihat lebih lengkap</string>
   <string name="most_read_list_card_title">Sedang tren</string>
   <string name="view_static_card_icon_content_description">Ikon kad</string>
   <string name="view_card_news_title">Berita terkini</string>
@@ -415,7 +449,6 @@
   <string name="view_featured_article_card_title">Rencana pilihan</string>
   <string name="view_featured_article_footer_save_button_label">Simpan</string>
   <string name="view_featured_article_footer_saved_button_label">Disimpan</string>
-  <string name="feed_configure_menu_title">Konfigurasikan kad</string>
   <string name="feed_configure_activity_title">Ubahsuai suapan</string>
   <string name="feed_configure_menu_reset">Pulihkan pandangan lalai</string>
   <string name="feed_configure_menu_select_all">Pilih semua</string>
@@ -472,8 +505,8 @@
   <string name="description_edit_revert_history">Jika anda berminat, lihat &lt;a href=\"%1$s\"&gt;sejarah suntingan&lt;/a&gt;.</string>
   <string name="offline_compilation_download_device_offline">Tiada sambungan internet. Pastikan anda kembali dalam talian, kemudian cuba lagi.</string>
   <string name="offline_read_permission_rationale">Kebenaran untuk mengakses storan pada peranti anda diperlukan untuk melayari luar talian.</string>
+  <string name="offline_read_final_rationale">Kebenaran untuk mengakses storan pada peranti anda diperlukan untuk menggunakan Perpustakaan Luar Talian.</string>
   <string name="offline_read_permission_error">Kebenaran tidak diberikan untuk baca dari storan peranti.</string>
-  <string name="offline_card_text">Anda kini melayari Wikipedia di luar talian dengan rencana dalam Perpustakaan Luar Talian anda.</string>
   <string name="offline_card_sideloading_text">Anda kini melayari Wikipedia luar talian dari pek rencana dalam Perpustakaan Luar Talian anda.</string>
   <string name="offline_my_compilations">Uruskan pustaka luar talian saya</string>
   <string name="offline_compilations_title">Perpustakaan Luar Talian</string>
@@ -482,15 +515,16 @@
   <string name="offline_compilations_add">Tambah ke Perpustakaan Luar Talian saya</string>
   <string name="remote_compilations_title">Perpustakaan Luar Talian</string>
   <string name="remote_compilations_description">Dengan Perpustakaan Luar Talian, anda kini boleh memuat turun pek rencana untuk dibaca apabila anda tidak mempunyai sambungan internet.</string>
-  <string name="offline_compilation_detail_date_size">%1$s • %2$.2f GB</string>
-  <string name="offline_compilation_detail_button_download">Muat turun • %.2f GB</string>
+  <string name="offline_compilation_detail_date_size_v2">%1$s • %2$s</string>
+  <string name="size_gb">%.2f GB</string>
+  <string name="size_mb">%.2f MB</string>
+  <string name="offline_compilation_detail_button_download_v2">Muat turun • %s</string>
   <string name="offline_compilation_detail_button_remove">Buang</string>
   <string name="remote_compilation_download">Muat turun</string>
-  <string name="storage_size">%.2f GB</string>
-  <string name="storage_size_free">%.2f GB bebas</string>
+  <string name="storage_size_free_v2">%s tersedia</string>
   <string name="storage_used_by_compilations">digunakan oleh Perpustakaan Luar Talian</string>
   <string name="storage_other_apps">Aplikasi lain</string>
-  <string name="offline_compilation_download_progress_text">%1$.2f GB / %2$.2f GB</string>
+  <string name="offline_compilation_download_progress_text_v2">%1$s / %2$s</string>
   <plurals name="offline_compilation_download_time_remaining">
     <item quantity="one">1 minit lagi</item>
     <item quantity="other">%d minit lagi</item>
@@ -504,14 +538,11 @@
   <string name="compilation_remove_confirm">Adakah anda ingin membuang ini dari Perpustakaan Luar Talian anda?</string>
   <string name="offline_library_title">Perpustakaan Luar Talian</string>
   <string name="offline_library_empty_title">Tiada apa-apa dalam Perpustakaan Luar Talian anda</string>
-  <string name="offline_library_empty_description">Pilih satu pak rencana Wikipedia untuk dimuat turun sekarang, untuk akses tanpa data kemudian.</string>
   <string name="offline_library_empty_description_sideload">“Pakej rencana” dalam pustaka Luar Talian anda adalah set pra-pakej rencana untuk penyimpanan mudah pada peranti anda, supaya anda boleh terus membaca semasa di luar talian.&lt;br /&gt;&lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
   <string name="offline_library_packs_hint">Pek rencana di pustaka anda tetap tersedia untuk dibaca apabila anda berada di luar talian. &lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
   <string name="offline_library_data_usage_hint">Ingin menjimatkan penggunaan data? Pilih “Pilih kandungan luar talian” dalam Tetapan untuk menunjukkan rencana luar talian yang ada dahulu, walaupun anda mempunyai sambungan. &lt;a href=\"#settings\"&gt;Pergi ke Tetapan&lt;/a&gt;</string>
   <string name="offline_library_empty_search">Carian Perpustakaan Luar Talian</string>
   <string name="offline_library_search_results_state">Hasil carian dari Perpustakaan Luar Talian anda</string>
-  <string name="offline_library_onboarding_action">Ketahui lebih lanjut</string>
-  <string name="offline_library_onboarding_text">Memperkenalkan Perpustakaan Luar Talian — memuatkan pek artikel untuk dibaca di luar talian masa kemudian.</string>
   <string name="offline_library_onboarding_button_done">Siap</string>
   <string name="offline_library_onboarding_build_library_title">Bina Perpustakaan Luar Talian anda</string>
   <string name="offline_library_onboarding_build_library_subtitle">Muat turun pek rencana Wikipedia sekarang untuk akses tanpa data kemudian.</string>
@@ -531,9 +562,9 @@
   <string name="onboarding_save_to_reading_lists_text">Buat senarai bacaan dari rencana yang ingin dibaca kemudian, walaupun semasa anda berada di luar talian.</string>
   <string name="onboarding_reading_list_sync_title">Senarai bacaan dengan penyegerakan</string>
   <string name="onboarding_reading_list_sync_text">Buat senarai bacaan dari artikel yang ingin dibaca kemudian, walaupun semasa anda berada di luar talian. &lt;a href=\"#login\"&gt;Log masuk atau buat&lt;/a&gt; akaun Wikipedia anda untuk memastikan senarai bacaan anda disokong.</string>
+  <string name="onboarding_reading_list_sync_text_v2">Anda boleh membuat senarai bacaan dari artikel yang ingin dibaca kemudian, walaupun semasa anda berada di luar talian. &lt;br/&gt;Log masuk ke akaun Wikipedia anda untuk menyegerakkan senarai bacaan anda. &lt;a href=\"#login\"&gt;Sertai Wikipedia&lt;/a&gt;</string>
   <string name="onboarding_analytics_title">Hantar data tanpa nama</string>
-  <string name="onboarding_analytics_text">Bantu menjadikan aplikasi lebih baik dengan memberitahu kami bagaimana anda menggunakannya. Data yang dikumpul tidak dikenali. &lt;a href=\"#privacy\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
-  <string name="onboarding_analytics_offline_text">Bantu menjadikan aplikasi lebih baik dengan memberitahu kami bagaimana anda menggunakannya. Data yang dikumpul tidak dikenali. &lt;a href=\"#offline\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
+  <string name="onboarding_analytics_offline_text">Bantu menjadikan aplikasi lebih baik dengan memberitahu kami bagaimana anda menggunakannya. Data yang dikumpul tidak dikenali. &lt;a href=\"#privacy\"&gt;Ketahui lebih lanjut&lt;/a&gt;</string>
   <string name="onboarding_analytics_switch_title">Hantar data penggunaan</string>
   <string name="onboarding_create_account_sync">Menyegerakkan senarai bacaan Anda</string>
   <string name="onboarding_create_account_contributions">Jejaki sumbangan anda</string>
@@ -543,7 +574,6 @@
   <string name="app_shortcuts_continue_reading">Teruskan membaca</string>
   <string name="app_shortcuts_search">Cari</string>
   <string name="more_trending_text">Lebih banyak seperti ini</string>
-  <string name="all_trending_text">Semua rencana tren pada %1$s</string>
   <string name="top_on_this_day">Sedang tren pada %1$s</string>
   <string name="on_this_day_card_title">Pada hari ini</string>
   <string name="more_events_text">Lebih banyak pada hari ini</string>

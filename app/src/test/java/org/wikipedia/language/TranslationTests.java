@@ -8,12 +8,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.wikipedia.test.TestRunner;
 import org.wikipedia.util.log.L;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +34,7 @@ import static org.junit.Assert.fail;
  *
  * TODO: check content_license_html is valid HTML
  */
-@RunWith(TestRunner.class) @SuppressWarnings("checkstyle:magicnumber")
+@SuppressWarnings("checkstyle:magicnumber")
 public class TranslationTests {
     private static File RES_BASE = new File("src/main/res/");
 
@@ -51,13 +48,7 @@ public class TranslationTests {
 
     @Test public void testAllTranslations() throws Throwable {
         // todo: flag usage of templates {{}}.
-        File[] resDirs = RES_BASE.listFiles(new FileFilter() {
-            @Override public boolean accept(File pathname) {
-                return pathname.isDirectory()
-                        && pathname.getName().startsWith("values")
-                        && !hasBadName(pathname);
-            }
-        });
+        File[] resDirs = RES_BASE.listFiles((File pathname) -> pathname.isDirectory() && pathname.getName().startsWith("values") && !hasBadName(pathname));
         for (File dir : resDirs) {
             String lang = dir.getName().contains("-") ? dir.getName().substring(dir.getName().indexOf("-") + 1) : "en";
             Locale locale = new Locale(lang);

@@ -1,20 +1,23 @@
 package org.wikipedia.activity;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.DraweeTransition;
@@ -23,14 +26,21 @@ import com.squareup.otto.Subscribe;
 import org.wikipedia.Constants;
 import org.wikipedia.R;
 import org.wikipedia.WikipediaApp;
+import org.wikipedia.auth.AccountUtil;
 import org.wikipedia.crash.CrashReportActivity;
 import org.wikipedia.events.NetworkConnectEvent;
+import org.wikipedia.events.ReadingListsEnableDialogEvent;
+import org.wikipedia.events.ReadingListsMergeLocalDialogEvent;
+import org.wikipedia.events.ReadingListsNoLongerSyncedEvent;
+import org.wikipedia.events.SplitLargeListsEvent;
 import org.wikipedia.events.ThemeChangeEvent;
 import org.wikipedia.events.WikipediaZeroEnterEvent;
 import org.wikipedia.offline.Compilation;
 import org.wikipedia.offline.OfflineManager;
-import org.wikipedia.readinglist.sync.ReadingListSynchronizer;
+import org.wikipedia.readinglist.ReadingListSyncBehaviorDialogs;
+import org.wikipedia.readinglist.sync.ReadingListSyncAdapter;
 import org.wikipedia.recurring.RecurringTasksExecutor;
+import org.wikipedia.savedpages.SavedPageSyncService;
 import org.wikipedia.settings.Prefs;
 import org.wikipedia.util.DeviceUtil;
 import org.wikipedia.util.FeedbackUtil;
@@ -40,13 +50,17 @@ import org.wikipedia.util.log.L;
 import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private EventBusMethods busMethods;
+    private static EventBusMethodsExclusive EXCLUSIVE_BUS_METHODS;
+
+    private EventBusMethodsNonExclusive localBusMethods;
+    private EventBusMethodsExclusive exclusiveBusMethods;
     private NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        busMethods = new EventBusMethods();
-        WikipediaApp.getInstance().getBus().register(busMethods);
+        localBusMethods = new EventBusMethodsNonExclusive();
+        exclusiveBusMethods = new EventBusMethodsExclusive();
+        WikipediaApp.getInstance().getBus().register(localBusMethods);
 
         setTheme();
         removeSplashBackground();
@@ -59,19 +73,34 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Conditionally execute all recurring tasks
         new RecurringTasksExecutor(WikipediaApp.getInstance()).run();
 
+        if (Prefs.isReadingListsFirstTimeSync() && AccountUtil.isLoggedIn()) {
+            Prefs.setReadingListsFirstTimeSync(false);
+            Prefs.setReadingListSyncEnabled(true);
+            ReadingListSyncAdapter.manualSyncWithForce();
+        }
+
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, filter);
     }
 
     @Override protected void onDestroy() {
         unregisterReceiver(networkStateReceiver);
-        WikipediaApp.getInstance().getBus().unregister(busMethods);
-        busMethods = null;
+        WikipediaApp.getInstance().getBus().unregister(localBusMethods);
+        localBusMethods = null;
+        if (EXCLUSIVE_BUS_METHODS == exclusiveBusMethods) {
+            unregisterExclusiveBusMethods();
+        }
+        exclusiveBusMethods = null;
         super.onDestroy();
     }
 
     @Override protected void onResume() {
         super.onResume();
+
+        // allow this activity's exclusive bus methods to override any existing ones.
+        unregisterExclusiveBusMethods();
+        EXCLUSIVE_BUS_METHODS = exclusiveBusMethods;
+        WikipediaApp.getInstance().getBus().register(EXCLUSIVE_BUS_METHODS);
 
         // The UI is likely shown, giving the user the opportunity to exit and making a crash loop
         // less probable.
@@ -102,6 +131,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                     onOfflineCompilationsError(new RuntimeException(getString(R.string.offline_read_permission_error)));
                     if (PermissionUtil.shouldShowWritePermissionRationale(this)) {
                         showStoragePermissionSnackbar();
+                    } else {
+                        showAppSettingSnackbar();
                     }
                 }
                 break;
@@ -146,11 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void searchOfflineCompilationsWithPermission(boolean force) {
         if (!PermissionUtil.hasWriteExternalStoragePermission(this)) {
-            if (PermissionUtil.shouldShowWritePermissionRationale(this)) {
-                requestStoragePermission();
-            } else {
-                onOfflineCompilationsError(new RuntimeException(getString(R.string.offline_read_permission_error)));
-            }
+           requestStoragePermission();
         } else {
             searchOfflineCompilations(force);
         }
@@ -177,6 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void requestStoragePermission() {
+        Prefs.setAskedForPermissionOnce(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         PermissionUtil.requestWriteStorageRuntimePermissions(BaseActivity.this,
                 Constants.ACTIVITY_REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
@@ -184,13 +212,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void showStoragePermissionSnackbar() {
         Snackbar snackbar = FeedbackUtil.makeSnackbar(this,
                 getString(R.string.offline_read_permission_rationale), FeedbackUtil.LENGTH_DEFAULT);
-        snackbar.setAction(R.string.page_error_retry, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestStoragePermission();
-            }
-        });
+        snackbar.setAction(R.string.page_error_retry, (v) -> requestStoragePermission());
         snackbar.show();
+    }
+
+    private void showAppSettingSnackbar() {
+        Snackbar snackbar = FeedbackUtil.makeSnackbar(this,
+                getString(R.string.offline_read_final_rationale), FeedbackUtil.LENGTH_DEFAULT);
+        snackbar.setAction(R.string.app_settings, (v) -> goToSystemAppSettings());
+        snackbar.show();
+    }
+
+    private void goToSystemAppSettings() {
+        Intent appSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+        appSettings.addCategory(Intent.CATEGORY_DEFAULT);
+        appSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(appSettings);
     }
 
     private class NetworkStateReceiver extends BroadcastReceiver {
@@ -198,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (DeviceUtil.isOnline()) {
                 onGoOnline();
-                ReadingListSynchronizer.instance().syncSavedPages();
+                SavedPageSyncService.enqueue();
             } else {
                 onGoOffline();
             }
@@ -209,7 +246,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(null);
     }
 
-    private class EventBusMethods {
+    private void unregisterExclusiveBusMethods() {
+        if (EXCLUSIVE_BUS_METHODS != null) {
+            WikipediaApp.getInstance().getBus().unregister(EXCLUSIVE_BUS_METHODS);
+            EXCLUSIVE_BUS_METHODS = null;
+        }
+    }
+
+    /**
+     * Bus methods that should be caught by all created activities.
+     */
+    private class EventBusMethodsNonExclusive {
+        @Subscribe public void on(ThemeChangeEvent event) {
+            recreate();
+        }
+    }
+
+    /**
+     * Bus methods that should be caught only by the topmost activity.
+     */
+    private class EventBusMethodsExclusive {
         // todo: reevaluate lifecycle. the bus is active when this activity is paused and we show ui
         @Subscribe public void on(WikipediaZeroEnterEvent event) {
             if (Prefs.isZeroTutorialEnabled()) {
@@ -220,12 +276,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         @Subscribe public void on(NetworkConnectEvent event) {
-            ReadingListSynchronizer.instance().syncSavedPages();
+            SavedPageSyncService.enqueue();
         }
 
-        @Subscribe public void on(ThemeChangeEvent event) {
-            recreate();
+        @Subscribe public void on(SplitLargeListsEvent event) {
+            new AlertDialog.Builder(BaseActivity.this)
+                    .setMessage(getString(R.string.split_reading_list_message, Constants.MAX_READING_LIST_ARTICLE_LIMIT))
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
+
+        @Subscribe public void on(ReadingListsNoLongerSyncedEvent event) {
+            ReadingListSyncBehaviorDialogs.detectedRemoteTornDownDialog(BaseActivity.this);
+        }
+
+        @Subscribe public void on(ReadingListsMergeLocalDialogEvent event) {
+            ReadingListSyncBehaviorDialogs.mergeExistingListsOnLoginDialog(BaseActivity.this);
+        }
+
+        @Subscribe public void on(ReadingListsEnableDialogEvent event) {
+            ReadingListSyncBehaviorDialogs.promptEnableSyncDialog(BaseActivity.this);
         }
     }
-
 }

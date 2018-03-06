@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import org.wikipedia.R;
+import org.wikipedia.WikipediaApp;
 import org.wikipedia.auth.AccountUtil;
 import org.wikipedia.dataclient.SharedPreferenceCookieManager;
 import org.wikipedia.dataclient.WikiSite;
@@ -21,10 +24,12 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 
 public class CsrfTokenClient {
     static final String ANON_TOKEN = "+\\";
     private static final int MAX_RETRIES = 1;
+    private static final int MAX_RETRIES_OF_LOGIN_BLOCKING = 2;
     @NonNull private final WikiCachedService<Service> cachedService = new MwCachedService<>(Service.class);
     @NonNull private final WikiSite csrfWikiSite;
     @NonNull private final WikiSite loginWikiSite;
@@ -91,11 +96,9 @@ public class CsrfTokenClient {
 
             SharedPreferenceCookieManager.getInstance().clearAllCookies();
 
-            login(AccountUtil.getUserName(), AccountUtil.getPassword(), new RetryCallback() {
-                @Override public void retry() {
-                    L.i("retrying...");
-                    request(callback);
-                }
+            login(AccountUtil.getUserName(), AccountUtil.getPassword(), () -> {
+                L.i("retrying...");
+                request(callback);
             }, callback);
         } else {
             callback.failure(caught);
@@ -129,6 +132,38 @@ public class CsrfTokenClient {
                 });
     }
 
+    @NonNull public String getTokenBlocking() throws Throwable {
+        String token = "";
+        Service service = cachedService.service(csrfWikiSite);
+
+        for (int retry = 0; retry < MAX_RETRIES_OF_LOGIN_BLOCKING; retry++) {
+            try {
+                if (retry > 0) {
+                    // Log in explicitly
+                    new LoginClient().loginBlocking(loginWikiSite, AccountUtil.getUserName(),
+                            AccountUtil.getPassword(), "");
+                }
+
+                Response<MwQueryResponse> response = service.request().execute();
+                if (response.body() == null || !response.body().success()
+                        || TextUtils.isEmpty(response.body().query().csrfToken())) {
+                    continue;
+                }
+                token = response.body().query().csrfToken();
+                if (AccountUtil.isLoggedIn() && token.equals(ANON_TOKEN)) {
+                    throw new RuntimeException("App believes we're logged in, but got anonymous token.");
+                }
+                break;
+            } catch (Throwable t) {
+                L.w(t);
+            }
+        }
+        if (TextUtils.isEmpty(token) || token.equals(ANON_TOKEN)) {
+            throw new IOException("Invalid token, or login failure.");
+        }
+        return token;
+    }
+
     @VisibleForTesting @NonNull Call<MwQueryResponse> requestToken(@NonNull Service service,
                                                                    @NonNull final Callback cb) {
         Call<MwQueryResponse> call = service.request();
@@ -160,11 +195,29 @@ public class CsrfTokenClient {
         void twoFactorPrompt();
     }
 
+    public static class DefaultCallback implements Callback {
+        @Override
+        public void success(@NonNull String token) {
+        }
+
+        @Override
+        public void failure(@NonNull Throwable caught) {
+            L.e(caught);
+        }
+
+        @Override
+        public void twoFactorPrompt() {
+            Toast.makeText(WikipediaApp.getInstance(),
+                    R.string.login_2fa_other_workflow_error_msg, Toast.LENGTH_LONG).show();
+        }
+    }
+
     private interface RetryCallback {
         void retry();
     }
 
     @VisibleForTesting interface Service {
+        @Headers("Cache-Control: no-cache")
         @GET("w/api.php?action=query&format=json&formatversion=2&meta=tokens&type=csrf")
         Call<MwQueryResponse> request();
     }

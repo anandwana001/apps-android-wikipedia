@@ -37,9 +37,8 @@ import org.wikipedia.offline.OfflineManager;
 import org.wikipedia.page.leadimages.LeadImagesHandler;
 import org.wikipedia.pageimages.PageImage;
 import org.wikipedia.pageimages.PageImagesClient;
-import org.wikipedia.readinglist.ReadingList;
-import org.wikipedia.readinglist.page.ReadingListPage;
-import org.wikipedia.readinglist.page.database.ReadingListDaoProxy;
+import org.wikipedia.readinglist.database.ReadingListDbHelper;
+import org.wikipedia.readinglist.database.ReadingListPage;
 import org.wikipedia.settings.Prefs;
 import org.wikipedia.util.DateUtil;
 import org.wikipedia.util.DimenUtil;
@@ -223,12 +222,9 @@ public class PageFragmentLoadState {
     }
 
     public void layoutLeadImage() {
-        leadImagesHandler.beginLayout(new LeadImagesHandler.OnLeadImageLayoutListener() {
-            @Override
-            public void onLayoutComplete(int sequence) {
-                if (fragment.isAdded()) {
-                    fragment.setToolbarFadeEnabled(leadImagesHandler.isLeadImageEnabled());
-                }
+        leadImagesHandler.beginLayout((sequence) -> {
+            if (fragment.isAdded()) {
+                fragment.setToolbarFadeEnabled(leadImagesHandler.isLeadImageEnabled());
             }
         }, sequenceNumber.get());
     }
@@ -323,40 +319,36 @@ public class PageFragmentLoadState {
                 fragment.onPageLoadComplete();
             }
         });
-        bridge.addListener("pageInfo", new CommunicationBridge.JSEventListener() {
-            @Override
-            public void onMessage(String message, JSONObject payload) {
-                if (fragment.isAdded()) {
-                    PageInfo pageInfo = PageInfoUnmarshaller.unmarshal(model.getTitle(),
-                            model.getTitle().getWikiSite(), payload);
-                    fragment.updatePageInfo(pageInfo);
-                }
+        bridge.addListener("pageInfo", (String message, JSONObject payload) -> {
+            if (fragment.isAdded()) {
+                PageInfo pageInfo = PageInfoUnmarshaller.unmarshal(model.getTitle(),
+                        model.getTitle().getWikiSite(), payload);
+                fragment.updatePageInfo(pageInfo);
             }
         });
     }
 
     private void pageLoadCheckReadingLists(final int sequence) {
-        ReadingList.DAO.anyListContainsTitleAsync(ReadingListDaoProxy.key(model.getTitle()),
-                new CallbackTask.Callback<ReadingListPage>() {
-                    @Override public void success(@Nullable ReadingListPage page) {
-                        if (!sequenceNumber.inSync(sequence)) {
-                            return;
-                        }
-                        model.setReadingListPage(page);
-                        fragment.updateBookmarkAndMenuOptions();
-                        pageLoadPrepareWebView();
-                    }
-
-                    @Override
-                    public void failure(Throwable caught) {
-                        if (!sequenceNumber.inSync(sequence)) {
-                            return;
-                        }
-                        L.w(caught);
-                        fragment.updateBookmarkAndMenuOptions();
-                        pageLoadPrepareWebView();
-                    }
-                });
+        CallbackTask.execute(() -> ReadingListDbHelper.instance().findPageInAnyList(model.getTitle()), new CallbackTask.Callback<ReadingListPage>() {
+            @Override
+            public void success(ReadingListPage page) {
+                if (!sequenceNumber.inSync(sequence)) {
+                    return;
+                }
+                model.setReadingListPage(page);
+                fragment.updateBookmarkAndMenuOptions();
+                pageLoadPrepareWebView();
+            }
+            @Override
+            public void failure(Throwable caught) {
+                if (!sequenceNumber.inSync(sequence)) {
+                    return;
+                }
+                L.w(caught);
+                fragment.updateBookmarkAndMenuOptions();
+                pageLoadPrepareWebView();
+            }
+        });
     }
 
     private void pageLoadPrepareWebView() {
@@ -381,12 +373,7 @@ public class PageFragmentLoadState {
         if (Prefs.preferOfflineContent() && OfflineManager.instance().titleExists(model.getTitle().getDisplayText())) {
             pageLoadFromCompilation();
         } else {
-            pageLoadFromNetwork(new ErrorCallback() {
-                @Override
-                public void call(final Throwable networkError) {
-                    fragment.onPageLoadError(networkError);
-                }
-            });
+            pageLoadFromNetwork((final Throwable networkError) -> fragment.onPageLoadError(networkError));
         }
     }
 
@@ -443,15 +430,12 @@ public class PageFragmentLoadState {
         model.setPage(page);
         editHandler.setPage(model.getPage());
 
-        leadImagesHandler.beginLayout(new LeadImagesHandler.OnLeadImageLayoutListener() {
-            @Override
-            public void onLayoutComplete(int sequence) {
-                if (!fragment.isAdded() || !sequenceNumber.inSync(sequence)) {
-                    return;
-                }
-                fragment.setToolbarFadeEnabled(leadImagesHandler.isLeadImageEnabled());
-                loadContentsFromCompilation();
+        leadImagesHandler.beginLayout((sequence) -> {
+            if (!fragment.isAdded() || !sequenceNumber.inSync(sequence)) {
+                return;
             }
+            fragment.setToolbarFadeEnabled(leadImagesHandler.isLeadImageEnabled());
+            loadContentsFromCompilation();
         }, sequenceNumber.get());
 
         if (webView.getVisibility() != View.VISIBLE) {
@@ -702,15 +686,12 @@ public class PageFragmentLoadState {
             app.getSessionFunnel().noDescription();
         }
 
-        layoutLeadImage(new Runnable() {
-            @Override
-            public void run() {
-                if (!fragment.isAdded()) {
-                    return;
-                }
-                fragment.callback().onPageInvalidateOptionsMenu();
-                pageLoadRemainingSections(sequenceNumber.get());
+        layoutLeadImage(() -> {
+            if (!fragment.isAdded()) {
+                return;
             }
+            fragment.callback().onPageInvalidateOptionsMenu();
+            pageLoadRemainingSections(sequenceNumber.get());
         });
 
         // Update our history entry, in case the Title was changed (i.e. normalized)

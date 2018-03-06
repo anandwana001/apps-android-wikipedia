@@ -20,6 +20,7 @@ import org.wikipedia.util.log.L;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Locale;
 
 import static org.wikipedia.util.UriUtil.decodeURL;
 
@@ -142,15 +143,22 @@ public class PageTitle implements Parcelable {
 
         String[] parts = text.split(":", -1);
         if (parts.length > 1) {
-            this.namespace = parts[0];
+            String namespaceOrLanguage = parts[0];
+            if (Arrays.asList(Locale.getISOLanguages()).contains(namespaceOrLanguage)) {
+                this.namespace = null;
+                this.wiki = WikiSite.forLanguageCode(namespaceOrLanguage);
+            } else {
+                this.wiki = wiki;
+                this.namespace = namespaceOrLanguage;
+            }
             this.text = TextUtils.join(":", Arrays.copyOfRange(parts, 1, parts.length));
         } else {
+            this.wiki = wiki;
             this.namespace = null;
             this.text = parts[0];
         }
 
         this.thumbUrl = thumbUrl;
-        this.wiki = wiki;
         this.properties = properties;
     }
 
@@ -273,6 +281,8 @@ public class PageTitle implements Parcelable {
     }
 
     public String getPrefixedText() {
+
+        // TODO: find a better way to check if the namespace is a ISO Alpha2 Code (two digits country code)
         return namespace == null ? getText() : StringUtil.addUnderscores(namespace) + ":" + getText();
     }
 
@@ -320,7 +330,7 @@ public class PageTitle implements Parcelable {
 
         PageTitle other = (PageTitle)o;
         // Not using namespace directly since that can be null
-        return other.getPrefixedText().equals(getPrefixedText()) && other.wiki.equals(wiki);
+        return StringUtil.normalizedEquals(other.getPrefixedText(), getPrefixedText()) && other.wiki.equals(wiki);
     }
 
     @Override public int hashCode() {

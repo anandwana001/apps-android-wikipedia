@@ -8,23 +8,12 @@ def testAllTask(String testAllName, String jvmJUnitName, String androidInstrumen
     }
 }
 
-// specify debug or release build type for connectedAndroidTest. both cannot be used simultaneously.
-// defaults to debug
-android.testBuildType project.gradle.startParameter.taskNames.find { it.contains 'Release' } ?
-        'release' :
-        'debug'
-
 // add testAll tasks for each build variant of the current build type
 android.productFlavors.all { flavor ->
     String variantName = flavor.name.capitalize() + android.testBuildType.capitalize()
     String testAllName = "testAll${variantName}"
     String jvmJUnitName = "test${variantName}UnitTest"
-    String androidInstrumentationName
-    if (variantName == 'DevDebug' || variantName == 'AlphaRelease') {
-        androidInstrumentationName = "screenshotTests${variantName}"
-    } else {
-        androidInstrumentationName = "connected${variantName}AndroidTest"
-    }
+    String androidInstrumentationName = "connected${variantName}AndroidTest"
 
     testAllTask testAllName, jvmJUnitName, androidInstrumentationName
 }

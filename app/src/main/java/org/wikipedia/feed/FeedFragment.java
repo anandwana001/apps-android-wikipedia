@@ -26,7 +26,6 @@ import org.wikipedia.WikipediaApp;
 import org.wikipedia.activity.FragmentUtil;
 import org.wikipedia.analytics.FeedFunnel;
 import org.wikipedia.feed.configure.ConfigureActivity;
-import org.wikipedia.feed.featured.FeaturedArticleCardView;
 import org.wikipedia.feed.image.FeaturedImage;
 import org.wikipedia.feed.image.FeaturedImageCard;
 import org.wikipedia.feed.model.Card;
@@ -41,7 +40,9 @@ import org.wikipedia.history.HistoryEntry;
 import org.wikipedia.offline.LocalCompilationsActivity;
 import org.wikipedia.offline.OfflineTutorialActivity;
 import org.wikipedia.random.RandomActivity;
-import org.wikipedia.readinglist.sync.ReadingListSynchronizer;
+import org.wikipedia.readinglist.ReadingListSyncBehaviorDialogs;
+import org.wikipedia.readinglist.database.ReadingListDbHelper;
+import org.wikipedia.readinglist.sync.ReadingListSyncAdapter;
 import org.wikipedia.settings.Prefs;
 import org.wikipedia.settings.SettingsActivity;
 import org.wikipedia.util.DeviceUtil;
@@ -80,8 +81,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
         void onFeedSelectPage(HistoryEntry entry);
         void onFeedSelectPageFromExistingTab(HistoryEntry entry);
         void onFeedAddPageToList(HistoryEntry entry);
-        void onFeedAddFeaturedPageToList(FeaturedArticleCardView view, HistoryEntry entry);
-        void onFeedRemovePageFromList(FeaturedArticleCardView view, HistoryEntry entry);
+        void onFeedRemovePageFromList(HistoryEntry entry);
         void onFeedSharePage(HistoryEntry entry);
         void onFeedNewsItemSelected(NewsItemCard card, HorizontalScrollingListCardItemView view);
         void onFeedShareImage(FeaturedImageCard card);
@@ -120,12 +120,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
         feedView.addOnScrollListener(feedScrollListener);
 
         swipeRefreshLayout.setColorSchemeResources(ResourceUtil.getThemedAttributeId(getContext(), R.attr.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(this::refresh);
 
         coordinator.setFeedUpdateListener(new FeedCoordinator.FeedUpdateListener() {
             @Override public void insert(Card card, int pos) {
@@ -133,15 +128,6 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
                     swipeRefreshLayout.setRefreshing(false);
                     if (feedView != null && feedAdapter != null) {
                         feedAdapter.notifyItemInserted(pos);
-                    }
-                }
-            }
-
-            @Override public void swap(Card card, int pos) {
-                if (isAdded()) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    if (feedView != null && feedAdapter != null) {
-                        feedAdapter.notifyItemChanged(pos);
                     }
                 }
             }
@@ -161,7 +147,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
             getCallback().updateToolbarElevation(shouldElevateToolbar());
         }
 
-        ReadingListSynchronizer.instance().sync();
+        ReadingListSyncAdapter.manualSync();
 
         return view;
     }
@@ -330,8 +316,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
 
         @Override
         public void onRetryFromOffline() {
-            funnel.requestMore(coordinator.getAge());
-            coordinator.retryFromOffline(app.getWikiSite());
+            refresh();
         }
 
         @Override
@@ -363,16 +348,9 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
         }
 
         @Override
-        public void onAddFeaturedPageToList(@NonNull FeaturedArticleCardView view, @NonNull HistoryEntry entry) {
+        public void onRemovePageFromList(@NonNull HistoryEntry entry) {
             if (getCallback() != null) {
-                getCallback().onFeedAddFeaturedPageToList(view, entry);
-            }
-        }
-
-        @Override
-        public void onRemoveFeaturedPageFromList(@NonNull FeaturedArticleCardView view, @NonNull HistoryEntry entry) {
-            if (getCallback() != null) {
-                getCallback().onFeedRemovePageFromList(view, entry);
+                getCallback().onFeedRemovePageFromList(entry);
             }
         }
 
@@ -485,12 +463,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
             Snackbar snackbar = FeedbackUtil.makeSnackbar(getActivity(), ThrowableUtil.isOffline(t)
                     ? getString(R.string.view_wiki_error_message_offline) : t.getMessage(),
                     FeedbackUtil.LENGTH_DEFAULT);
-            snackbar.setAction(R.string.page_error_retry, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    view.getRandomPage();
-                }
-            });
+            snackbar.setAction(R.string.page_error_retry, (v) -> view.getRandomPage());
             snackbar.show();
         }
 
@@ -533,12 +506,7 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
         Snackbar snackbar = FeedbackUtil.makeSnackbar(getActivity(),
                 getString(R.string.menu_feed_card_dismissed),
                 FeedbackUtil.LENGTH_DEFAULT);
-        snackbar.setAction(R.string.feed_undo_dismiss_card, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                coordinator.undoDismissCard(card, position);
-            }
-        });
+        snackbar.setAction(R.string.feed_undo_dismiss_card, (v) -> coordinator.undoDismissCard(card, position));
         snackbar.show();
     }
 
@@ -583,6 +551,12 @@ public class FeedFragment extends Fragment implements BackPressedHandler {
         public void logoutClick() {
             WikipediaApp.getInstance().logOut();
             FeedbackUtil.showMessage(FeedFragment.this, R.string.toast_logout_complete);
+
+            if (Prefs.isReadingListSyncEnabled() && !ReadingListDbHelper.instance().isEmpty()) {
+                ReadingListSyncBehaviorDialogs.removeExistingListsOnLogoutDialog(getActivity());
+            }
+            Prefs.setReadingListsLastSyncTime(null);
+            Prefs.setReadingListSyncEnabled(false);
         }
 
         @Override

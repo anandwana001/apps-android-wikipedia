@@ -1,16 +1,14 @@
 package org.wikipedia.dataclient.okhttp;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.wikipedia.test.TestFileUtil;
-import org.wikipedia.test.TestRunner;
 
 import java.io.ByteArrayInputStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(TestRunner.class) public class AvailableInputStreamTest {
+public class AvailableInputStreamTest {
 
     @SuppressWarnings("checkstyle:magicnumber")
     @Test public void testAvailableInputStream() throws Throwable {

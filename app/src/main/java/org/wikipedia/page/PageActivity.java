@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -45,6 +46,7 @@ import org.wikipedia.analytics.IntentFunnel;
 import org.wikipedia.analytics.LinkPreviewFunnel;
 import org.wikipedia.dataclient.WikiSite;
 import org.wikipedia.descriptions.DescriptionEditRevertHelpView;
+import org.wikipedia.events.ArticleSavedOrDeletedEvent;
 import org.wikipedia.events.ChangeTextSizeEvent;
 import org.wikipedia.feed.mainpage.MainPageClient;
 import org.wikipedia.gallery.GalleryActivity;
@@ -54,11 +56,11 @@ import org.wikipedia.page.linkpreview.LinkPreviewDialog;
 import org.wikipedia.page.tabs.TabsProvider;
 import org.wikipedia.page.tabs.TabsProvider.TabPosition;
 import org.wikipedia.readinglist.AddToReadingListDialog;
+import org.wikipedia.readinglist.database.ReadingListPage;
 import org.wikipedia.search.SearchFragment;
 import org.wikipedia.search.SearchInvokeSource;
 import org.wikipedia.settings.SettingsActivity;
 import org.wikipedia.theme.ThemeChooserDialog;
-import org.wikipedia.useroption.sync.UserOptionContentResolver;
 import org.wikipedia.util.ClipboardUtil;
 import org.wikipedia.util.DeviceUtil;
 import org.wikipedia.util.FeedbackUtil;
@@ -184,8 +186,6 @@ public class PageActivity extends BaseActivity implements PageFragment.Callback,
             // if there's no savedInstanceState, and we're not coming back from a Theme change,
             // then we must have been launched with an Intent, so... handle it!
             handleIntent(getIntent());
-
-            UserOptionContentResolver.requestManualSync();
         }
     }
 
@@ -437,27 +437,24 @@ public class PageActivity extends BaseActivity implements PageFragment.Callback,
             return;
         }
 
-        tabsContainerView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (!pageFragment.isAdded()) {
-                    return;
-                }
-                // Close the link preview, if one is open.
-                hideLinkPreview();
-
-                pageFragment.closeFindInPage();
-                if (position == TabPosition.CURRENT_TAB) {
-                    pageFragment.loadPage(title, entry, true);
-                } else if (position == TabPosition.NEW_TAB_BACKGROUND) {
-                    pageFragment.openInNewBackgroundTabFromMenu(title, entry);
-                } else if (position == TabPosition.EXISTING_TAB) {
-                    pageFragment.openFromExistingTab(title, entry);
-                } else {
-                    pageFragment.openInNewForegroundTabFromMenu(title, entry);
-                }
-                app.getSessionFunnel().pageViewed(entry);
+        tabsContainerView.post(() -> {
+            if (!pageFragment.isAdded()) {
+                return;
             }
+            // Close the link preview, if one is open.
+            hideLinkPreview();
+
+            pageFragment.closeFindInPage();
+            if (position == TabPosition.CURRENT_TAB) {
+                pageFragment.loadPage(title, entry, true);
+            } else if (position == TabPosition.NEW_TAB_BACKGROUND) {
+                pageFragment.openInNewBackgroundTabFromMenu(title, entry);
+            } else if (position == TabPosition.EXISTING_TAB) {
+                pageFragment.openFromExistingTab(title, entry);
+            } else {
+                pageFragment.openInNewForegroundTabFromMenu(title, entry);
+            }
+            app.getSessionFunnel().pageViewed(entry);
         });
     }
 
@@ -757,12 +754,7 @@ public class PageActivity extends BaseActivity implements PageFragment.Callback,
     }
 
     private void handleLangLinkOrPageResult(final Intent data) {
-        tabsContainerView.post(new Runnable() {
-            @Override
-            public void run() {
-                handleIntent(data);
-            }
-        });
+        tabsContainerView.post(() -> handleIntent(data));
     }
 
     @Override
@@ -846,12 +838,9 @@ public class PageActivity extends BaseActivity implements PageFragment.Callback,
      */
     private void loadNewLanguageMainPage() {
         Handler uiThread = new Handler(Looper.getMainLooper());
-        uiThread.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadMainPageInForegroundTab();
-                updateFeaturedPageWidget();
-            }
+        uiThread.postDelayed(() -> {
+            loadMainPageInForegroundTab();
+            updateFeaturedPageWidget();
         }, DateUtils.SECOND_IN_MILLIS);
     }
 
@@ -908,10 +897,25 @@ public class PageActivity extends BaseActivity implements PageFragment.Callback,
                 .findFragmentById(R.id.activity_page_container);
     }
 
+    @NonNull public TabLayout getTabLayout() {
+        return pageFragment.getTabLayout();
+    }
+
     private class EventBusMethods {
         @Subscribe public void on(ChangeTextSizeEvent event) {
             if (pageFragment != null && pageFragment.getWebView() != null) {
                 pageFragment.updateFontSize();
+            }
+        }
+
+        @Subscribe public void on(@NonNull ArticleSavedOrDeletedEvent event) {
+            if (pageFragment == null || !pageFragment.isAdded()) {
+                return;
+            }
+            for (ReadingListPage page : event.getPages()) {
+                if (page.title().equals(pageFragment.getTitleOriginal().getDisplayText())) {
+                    pageFragment.updateBookmarkAndMenuOptionsFromDao();
+                }
             }
         }
     }

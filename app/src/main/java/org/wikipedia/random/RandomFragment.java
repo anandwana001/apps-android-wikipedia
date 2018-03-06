@@ -1,9 +1,11 @@
 package org.wikipedia.random;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,10 +25,9 @@ import org.wikipedia.page.ExclusiveBottomSheetPresenter;
 import org.wikipedia.page.PageActivity;
 import org.wikipedia.page.PageTitle;
 import org.wikipedia.readinglist.AddToReadingListDialog;
-import org.wikipedia.readinglist.ReadingList;
 import org.wikipedia.readinglist.ReadingListBookmarkMenu;
-import org.wikipedia.readinglist.page.ReadingListPage;
-import org.wikipedia.readinglist.page.database.ReadingListDaoProxy;
+import org.wikipedia.readinglist.database.ReadingListDbHelper;
+import org.wikipedia.readinglist.database.ReadingListPage;
 import org.wikipedia.util.DimenUtil;
 import org.wikipedia.util.FeedbackUtil;
 
@@ -37,7 +38,7 @@ import butterknife.Unbinder;
 
 public class RandomFragment extends Fragment {
     @BindView(R.id.random_item_pager) ViewPager randomPager;
-    @BindView(R.id.random_next_button) View nextButton;
+    @BindView(R.id.random_next_button) FloatingActionButton nextButton;
     @BindView(R.id.random_save_button) ImageView saveButton;
     @BindView(R.id.random_back_button) View backButton;
     private Unbinder unbinder;
@@ -64,7 +65,11 @@ public class RandomFragment extends Fragment {
         randomPager.setPageTransformer(true, new RandomPagerTransformer());
         randomPager.addOnPageChangeListener(viewPagerListener);
 
+        updateSaveShareButton();
         updateBackButton(0);
+        if (savedInstanceState != null && randomPager.getCurrentItem() == 0 && getTopTitle() != null) {
+            updateSaveShareButton(getTopTitle());
+        }
 
         funnel = new RandomizerFunnel(WikipediaApp.getInstance(), WikipediaApp.getInstance().getWikiSite(),
                 getActivity().getIntent().getIntExtra(RandomActivity.INVOKE_SOURCE_EXTRA, 0));
@@ -84,6 +89,9 @@ public class RandomFragment extends Fragment {
     }
 
     @OnClick(R.id.random_next_button) void onNextClick() {
+        if (nextButton.getDrawable() instanceof Animatable) {
+            ((Animatable) nextButton.getDrawable()).start();
+        }
         viewPagerListener.setNextPageSelectedAutomatic();
         randomPager.setCurrentItem(randomPager.getCurrentItem() + 1, true);
         if (funnel != null) {
@@ -144,29 +152,46 @@ public class RandomFragment extends Fragment {
     }
 
     private void updateSaveShareButton(@NonNull PageTitle title) {
-        ReadingList.DAO.anyListContainsTitleAsync(ReadingListDaoProxy.key(title),
-                new CallbackTask.DefaultCallback<ReadingListPage>() {
-                    @Override public void success(@Nullable ReadingListPage page) {
-                        saveButtonState = page != null;
-                        saveButton.setImageResource(saveButtonState
-                                ? R.drawable.ic_bookmark_white_24dp : R.drawable.ic_bookmark_border_white_24dp);
-                    }
-                });
+        CallbackTask.execute(() -> ReadingListDbHelper.instance().findPageInAnyList(title), new CallbackTask.DefaultCallback<ReadingListPage>() {
+            @Override
+            public void success(ReadingListPage page) {
+                saveButtonState = page != null;
+                saveButton.setImageResource(saveButtonState
+                        ? R.drawable.ic_bookmark_white_24dp : R.drawable.ic_bookmark_border_white_24dp);
+            }
+        });
     }
 
+    @SuppressWarnings("magicnumber")
+    public void updateSaveShareButton() {
+        RandomItemFragment f = getTopChild();
+        boolean enable = f != null && f.isLoadComplete();
+        saveButton.setClickable(enable);
+        saveButton.setAlpha(enable ? 1f : 0.5f);
+    }
+
+    public void onChildLoaded() {
+        updateSaveShareButton();
+    }
 
     @Nullable private PageTitle getTopTitle() {
+        RandomItemFragment f = getTopChild();
+        return f == null ? null : f.getTitle();
+    }
+
+    @Nullable private RandomItemFragment getTopChild() {
         FragmentManager fm = getFragmentManager();
         for (Fragment f : fm.getFragments()) {
             if (f instanceof RandomItemFragment
                     && ((RandomItemFragment) f).getPagerPosition() == randomPager.getCurrentItem()) {
-                return ((RandomItemFragment) f).getTitle();
+                return ((RandomItemFragment) f);
             }
         }
         return null;
     }
 
-    private class RandomItemAdapter extends FragmentPagerAdapter {
+    private class RandomItemAdapter extends FragmentPagerAdapter{
+
         RandomItemAdapter(AppCompatActivity activity) {
             super(activity.getSupportFragmentManager());
         }
@@ -241,6 +266,7 @@ public class RandomFragment extends Fragment {
             }
             nextPageSelectedAutomatic = false;
             prevPosition = position;
+            updateSaveShareButton();
         }
 
         @Override

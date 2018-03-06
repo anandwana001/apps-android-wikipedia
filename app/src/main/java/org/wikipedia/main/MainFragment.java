@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -31,7 +30,6 @@ import org.wikipedia.analytics.GalleryFunnel;
 import org.wikipedia.analytics.IntentFunnel;
 import org.wikipedia.analytics.LoginFunnel;
 import org.wikipedia.feed.FeedFragment;
-import org.wikipedia.feed.featured.FeaturedArticleCardView;
 import org.wikipedia.feed.image.FeaturedImage;
 import org.wikipedia.feed.image.FeaturedImageCard;
 import org.wikipedia.feed.news.NewsActivity;
@@ -251,24 +249,10 @@ public class MainFragment extends Fragment implements BackPressedHandler, FeedFr
                         AddToReadingListDialog.InvokeSource.FEED));
     }
 
-    @Override public void onFeedAddFeaturedPageToList(@NonNull final FeaturedArticleCardView view,
-                                                      @NonNull HistoryEntry entry) {
-        bottomSheetPresenter.show(getChildFragmentManager(),
-                AddToReadingListDialog.newInstance(entry.getTitle(),
-                        AddToReadingListDialog.InvokeSource.FEED,
-                        new DialogInterface.OnDismissListener() {
-                            @Override public void onDismiss(DialogInterface dialogInterface) {
-                                view.updateFooter();
-                            }
-                        }));
-    }
-
     @Override
-    public void onFeedRemovePageFromList(@NonNull FeaturedArticleCardView view,
-                                         @NonNull HistoryEntry entry) {
+    public void onFeedRemovePageFromList(@NonNull HistoryEntry entry) {
         FeedbackUtil.showMessage(getActivity(),
                 getString(R.string.reading_list_item_deleted, entry.getTitle().getDisplayText()));
-        view.updateFooter();
     }
 
     @Override public void onFeedSharePage(HistoryEntry entry) {
@@ -337,8 +321,7 @@ public class MainFragment extends Fragment implements BackPressedHandler, FeedFr
 
     public void requestUpdateToolbarElevation() {
         Fragment fragment = ((NavTabFragmentPagerAdapter) viewPager.getAdapter()).getCurrentFragment();
-        updateToolbarElevation(fragment instanceof FeedFragment
-                ? ((FeedFragment) fragment).shouldElevateToolbar() : true);
+        updateToolbarElevation(!(fragment instanceof FeedFragment) || ((FeedFragment) fragment).shouldElevateToolbar());
     }
 
     @Override public void onLoading() {

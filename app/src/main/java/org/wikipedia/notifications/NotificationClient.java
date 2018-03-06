@@ -20,6 +20,7 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -78,7 +79,7 @@ public final class NotificationClient {
 
     public void markRead(List<Notification> notifications) {
         final String idListStr = TextUtils.join("|", notifications);
-        editTokenClient.request(new CsrfTokenClient.Callback() {
+        editTokenClient.request(new CsrfTokenClient.DefaultCallback() {
             @Override
             public void success(@NonNull String token) {
                 requestMarkRead(service, token, idListStr).enqueue(new retrofit2.Callback<MwQueryResponse>() {
@@ -92,16 +93,6 @@ public final class NotificationClient {
                         L.e(t);
                     }
                 });
-            }
-
-            @Override
-            public void failure(@NonNull Throwable t) {
-                L.e(t);
-            }
-
-            @Override
-            public void twoFactorPrompt() {
-                // TODO: warn user.
             }
         });
     }
@@ -119,11 +110,13 @@ public final class NotificationClient {
     @VisibleForTesting interface Service {
         String ACTION = "w/api.php?format=json&formatversion=2&action=";
 
+        @Headers("Cache-Control: no-cache")
         @GET(ACTION + "query&meta=notifications&notfilter=!read&notprop=list")
         @NonNull
         Call<MwQueryResponse> getNotifications(@Query("notwikis") @NonNull String wikiList);
 
         @FormUrlEncoded
+        @Headers("Cache-Control: no-cache")
         @POST(ACTION + "echomarkread")
         Call<MwQueryResponse> markRead(@Field("token") @NonNull String token, @Field("list") @NonNull String idList);
     }

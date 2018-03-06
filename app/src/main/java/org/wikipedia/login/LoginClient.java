@@ -3,11 +3,14 @@ package org.wikipedia.login;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wikipedia.Constants;
+import org.wikipedia.R;
+import org.wikipedia.WikipediaApp;
 import org.wikipedia.dataclient.WikiSite;
 import org.wikipedia.dataclient.mwapi.MwException;
 import org.wikipedia.dataclient.mwapi.MwQueryResponse;
@@ -26,14 +29,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
  * Responsible for making login related requests to the server.
  */
 public class LoginClient {
-    @NonNull private final WikiCachedService<Service> cachedService
-            = new MwCachedService<>(Service.class);
+    @NonNull private final WikiCachedService<Service> cachedService = new MwCachedService<>(Service.class);
 
     @Nullable private Call<MwQueryResponse> tokenCall;
     @Nullable private Call<LoginResponse> loginCall;
@@ -109,6 +112,44 @@ public class LoginClient {
         });
     }
 
+    public void loginBlocking(@NonNull final WikiSite wiki, @NonNull final String userName,
+                              @NonNull final String password, @Nullable final String twoFactorCode) throws Throwable {
+        Response<MwQueryResponse> tokenResponse = cachedService.service(wiki).requestLoginToken().execute();
+        if (tokenResponse.body() == null || !tokenResponse.body().success()
+                || TextUtils.isEmpty(tokenResponse.body().query().loginToken())) {
+            throw new IOException("Unexpected response when getting login token.");
+        }
+        String loginToken = tokenResponse.body().query().loginToken();
+
+        Call<LoginResponse> tempLoginCall = StringUtils.defaultIfEmpty(twoFactorCode, "").isEmpty()
+                ? cachedService.service(wiki).logIn(userName, password, loginToken, Constants.WIKIPEDIA_URL)
+                : cachedService.service(wiki).logIn(userName, password, twoFactorCode, loginToken, true);
+        Response<LoginResponse> response = tempLoginCall.execute();
+        LoginResponse loginResponse = response.body();
+        if (loginResponse == null) {
+            throw new IOException("Unexpected response when logging in.");
+        }
+        LoginResult loginResult = loginResponse.toLoginResult(wiki, password);
+        if (loginResult == null) {
+            throw new IOException("Unexpected response when logging in.");
+        }
+        if ("UI".equals(loginResult.getStatus())) {
+            if (loginResult instanceof LoginOAuthResult) {
+
+                // TODO: Find a better way to boil up the warning about 2FA
+                Toast.makeText(WikipediaApp.getInstance(),
+                        R.string.login_2fa_other_workflow_error_msg, Toast.LENGTH_LONG).show();
+
+                throw new LoginFailedException(loginResult.getMessage());
+
+            } else {
+                throw new LoginFailedException(loginResult.getMessage());
+            }
+        } else if (!loginResult.pass() || TextUtils.isEmpty(loginResult.getUserName())) {
+            throw new LoginFailedException(loginResult.getMessage());
+        }
+    }
+
     private void getExtendedInfo(@NonNull final WikiSite wiki, @NonNull String userName,
                                  @NonNull final LoginResult loginResult, @NonNull final LoginCallback cb) {
         UserExtendedInfoClient infoClient = new UserExtendedInfoClient();
@@ -155,11 +196,13 @@ public class LoginClient {
 
         /** Request a login token to be used later to log in. */
         @NonNull
+        @Headers("Cache-Control: no-cache")
         @POST("w/api.php?format=json&formatversion=2&action=query&meta=tokens&type=login")
         Call<MwQueryResponse> requestLoginToken();
 
         /** Actually log in. Has to be x-www-form-urlencoded */
         @NonNull
+        @Headers("Cache-Control: no-cache")
         @FormUrlEncoded
         @POST("w/api.php?action=clientlogin&format=json&formatversion=2&rememberMe=")
         Call<LoginResponse> logIn(@Field("username") String user, @Field("password") String pass,
@@ -167,6 +210,7 @@ public class LoginClient {
 
         /** Actually log in. Has to be x-www-form-urlencoded */
         @NonNull
+        @Headers("Cache-Control: no-cache")
         @FormUrlEncoded
         @POST("w/api.php?action=clientlogin&format=json&formatversion=2&rememberMe=")
         Call<LoginResponse> logIn(@Field("username") String user, @Field("password") String pass,

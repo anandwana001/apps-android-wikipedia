@@ -2,15 +2,13 @@ package org.wikipedia.search;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.wikipedia.dataclient.mwapi.MwQueryResult;
 import org.wikipedia.json.GsonUtil;
-import org.wikipedia.test.TestRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(TestRunner.class) public class SearchResultsRedirectProcessingTest {
+public class SearchResultsRedirectProcessingTest {
 
     private MwQueryResult result;
 

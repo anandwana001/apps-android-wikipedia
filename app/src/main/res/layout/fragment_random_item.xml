@@ -29,6 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
             android:background="?attr/paper_color"
             android:visibility="gone" />
 
@@ -62,7 +64,6 @@
                 android:background="?attr/selectableItemBackground">
 
                 <TextView
-                    style="@style/RtlAwareTextView"
                     android:id="@+id/view_featured_article_card_article_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,7 +78,6 @@
                     tools:text="Lorem ipsum"/>
 
                 <org.wikipedia.views.GoneIfEmptyTextView
-                    style="@style/RtlAwareTextView"
                     android:id="@+id/view_featured_article_card_article_subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +90,6 @@
                     tools:text="Lorem ipsum"/>
 
                 <TextView
-                    style="@style/RtlAwareTextView"
                     android:id="@+id/view_featured_article_card_extract"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

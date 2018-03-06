@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -29,21 +30,14 @@ import static org.wikipedia.util.UriUtil.visitInExternalBrowser;
 public final class FeedbackUtil {
     public static final int LENGTH_DEFAULT = (int) TimeUnit.SECONDS.toMillis(5);
     private static final int SNACKBAR_MAX_LINES = 5;
-    private static View.OnLongClickListener TOOLBAR_LONG_CLICK_LISTENER = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            showToolbarButtonToast(v);
-            return true;
-        }
+    private static View.OnLongClickListener TOOLBAR_LONG_CLICK_LISTENER = (v) -> {
+        showToolbarButtonToast(v);
+        return true;
     };
 
-    public static Snackbar makeSnackbar(Activity activity, CharSequence text, int duration) {
-        return makeSnackbar(findBestView(activity), text, duration);
-    }
-
-    public static void showError(View containerView, Throwable e) {
-        ThrowableUtil.AppError error = ThrowableUtil.getAppError(containerView.getContext(), e);
-        makeSnackbar(containerView, error.getError(), LENGTH_DEFAULT).show();
+    public static void showError(Activity activity, Throwable e) {
+        ThrowableUtil.AppError error = ThrowableUtil.getAppError(activity, e);
+        makeSnackbar(activity, error.getError(), LENGTH_DEFAULT).show();
     }
 
     public static void showMessageAsPlainText(Activity activity, CharSequence possibleHtml) {
@@ -59,16 +53,12 @@ public final class FeedbackUtil {
         makeSnackbar(fragment.getActivity(), text, Snackbar.LENGTH_LONG).show();
     }
 
-    private static void showMessage(View containerView, CharSequence text, int duration) {
-        makeSnackbar(containerView, text, duration).show();
-    }
-
     public static void showMessage(Activity activity, @StringRes int resId) {
         showMessage(activity, activity.getString(resId), Snackbar.LENGTH_LONG);
     }
 
     public static void showMessage(Activity activity, CharSequence text) {
-        showMessage(findBestView(activity), text, Snackbar.LENGTH_LONG);
+        showMessage(activity, text, Snackbar.LENGTH_LONG);
     }
 
     public static void showMessage(Activity activity, @StringRes int resId, int duration) {
@@ -76,11 +66,7 @@ public final class FeedbackUtil {
     }
 
     public static void showMessage(Activity activity, CharSequence text, int duration) {
-        showMessage(findBestView(activity), text, duration);
-    }
-
-    public static void showError(Activity activity, Throwable e) {
-        showError(findBestView(activity), e);
+        makeSnackbar(activity, text, duration).show();
     }
 
     public static void showPrivacyPolicy(Context context) {
@@ -93,6 +79,10 @@ public final class FeedbackUtil {
 
     public static void showAboutWikipedia(Context context) {
         visitInExternalBrowser(context, Uri.parse(context.getString(R.string.about_wikipedia_url)));
+    }
+
+    public static void showAndroidAppFAQ(Context context) {
+        visitInExternalBrowser(context, Uri.parse(context.getString(R.string.android_app_faq_url)));
     }
 
     public static void setToolbarButtonLongPressToast(View... views) {
@@ -116,13 +106,25 @@ public final class FeedbackUtil {
                 listener);
     }
 
-    private static Snackbar makeSnackbar(View view, CharSequence text, int duration) {
+    public static Snackbar makeSnackbar(Activity activity, CharSequence text, int duration) {
+        View view = findBestView(activity);
         Snackbar snackbar = Snackbar.make(view, text, duration);
         TextView textView = snackbar.getView().findViewById(R.id.snackbar_text);
         textView.setMaxLines(SNACKBAR_MAX_LINES);
         TextView actionView = snackbar.getView().findViewById(R.id.snackbar_action);
         actionView.setTextColor(ContextCompat.getColor(view.getContext(), R.color.green50));
+        adjustLayoutParamsIfRequired(snackbar, activity);
         return snackbar;
+    }
+
+    private static void adjustLayoutParamsIfRequired(Snackbar snackbar, Activity activity) {
+        if (activity instanceof PageActivity) {
+            // TODO: move getLayoutParams() out of this logic if there has more special cases
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+            int tabLayoutHeight = ((PageActivity) activity).getTabLayout().getHeight();
+            params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin + tabLayoutHeight);
+            snackbar.getView().setLayoutParams(params);
+        }
     }
 
     private static void showToolbarButtonToast(View view) {
@@ -137,7 +139,7 @@ public final class FeedbackUtil {
         if (activity instanceof MainActivity) {
             return activity.findViewById(R.id.fragment_main_coordinator);
         } else if (activity instanceof PageActivity) {
-            return activity.findViewById(R.id.page_contents_container);
+            return activity.findViewById(R.id.fragment_page_coordinator);
         } else if (activity instanceof RandomActivity) {
             return activity.findViewById(R.id.random_coordinator_layout);
         } else {

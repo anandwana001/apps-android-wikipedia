@@ -23,7 +23,6 @@
 
     <TextView
         android:id="@+id/view_card_header_large_title"
-        style="@style/RtlAwareTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -41,7 +40,6 @@
 
     <TextView
         android:id="@+id/view_card_header_large_subtitle"
-        style="@style/RtlAwareTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
@@ -50,6 +48,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/white"
         android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_card_header_large_title"
         tools:text="Lorem ipsum" />
 </merge>

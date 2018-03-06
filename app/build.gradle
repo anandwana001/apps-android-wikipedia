@@ -39,7 +39,7 @@ final JavaVersion JAVA_VERSION = JavaVersion.VERSION_1_8
 android {
     // Keep version in sync with /project.properties
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.3'
 
     compileOptions {
         sourceCompatibility = JAVA_VERSION
@@ -55,9 +55,9 @@ android {
         applicationId 'org.wikipedia'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 222
+        versionCode 225
         testApplicationId 'org.wikipedia.test'
-        testInstrumentationRunner 'org.wikipedia.test.AndroidTestRunner'
+        testInstrumentationRunner "org.wikipedia.WikipediaTestRunner"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -101,7 +101,6 @@ android {
             versionName computeVersionName('dev')
             applicationIdSuffix 'dev'
             signingConfig signingConfigs.debug
-            testInstrumentationRunner 'org.wikipedia.test.AndroidTestRunner'
             dimension 'default'
         }
         prod {
@@ -118,7 +117,6 @@ android {
             versionName computeVersionName('alpha')
             applicationIdSuffix 'alpha'
             signingConfig signingConfigs.debug
-            testInstrumentationRunner 'org.wikipedia.test.AndroidTestRunner'
             dimension 'default'
         }
         beta {
@@ -153,11 +151,17 @@ android {
         exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
         exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
 }
 
 apply from: '../gradle/src/test.gradle'
 apply from: '../gradle/src/checkstyle.gradle'
-apply from: '../gradle/src/screenshot.gradle'
 
 dependencies {
 
@@ -169,13 +173,13 @@ dependencies {
                                    // app/src/main/java/okhttp3
     String retrofitVersion = '2.3.0'
     String supportVersion = '27.0.2'
-    String espressoVersion = '2.2.2'
+    String espressoVersion = '3.0.1'
     String butterKnifeVersion = '8.8.1'
-    String frescoVersion = '1.5.0' // When updating this version, resync file copies under
+    String frescoVersion = '1.8.0' // When updating this version, resync file copies under
                                    // app/src/main/java/com/facebook
-    String testingSupportVersion = '0.5'
+    String testingSupportVersion = '1.0.0'
     String mockitoCore = 'org.mockito:mockito-core:1.9.5'
-    String leakCanaryVersion = '1.5'
+    String leakCanaryVersion = '1.5.4'
 
     implementation "com.android.support:support-compat:$supportVersion"
     implementation "com.android.support:support-core-utils:$supportVersion"
@@ -201,7 +205,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0@aar"
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:5.4.0@aar"
     implementation "com.mapbox.mapboxsdk:mapbox-android-ui:2.2.9"
     implementation 'net.hockeyapp.android:HockeySDK:4.1.3'
     implementation 'org.apache.commons:commons-lang3:3.5'
@@ -223,7 +227,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation mockitoCore
-    testImplementation 'org.robolectric:robolectric:3.3.2'
+    testImplementation 'org.robolectric:robolectric:3.6.1'
     testImplementation "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
 
     androidTestImplementation mockitoCore
@@ -236,6 +240,8 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:$testingSupportVersion" // JUnit Rules
     androidTestImplementation "com.android.support.test:runner:$testingSupportVersion" // Android JUnit Runner
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoVersion"
+
 }
 
 private setSigningConfigKey(config, Properties props) {
@@ -259,7 +265,7 @@ private static Properties loadProperties(File file) {
     return props
 }
 
-addSyncContentProviderAuthority 'useroption', 'user_option'
+addSyncContentProviderAuthority 'readinglists', 'reading_lists'
 
 private void addSyncContentProviderAuthority(String path, String name) {
     android.productFlavors.all { ProductFlavor flavor ->

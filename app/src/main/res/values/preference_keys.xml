@@ -50,10 +50,12 @@
     <string name="preference_key_description_edit_tutorial_enabled">descriptionEditTutorialEnabled</string>
     <string name="preference_key_last_description_edit_time">lastDescriptionEditTime</string>
     <string name="preference_key_total_anon_descriptions_edited">totalAnonDescriptionsEdited</string>
-    <string name="preference_category_storage_sync">storageAndSync</string>
+    <string name="preference_category_sync">syncSettings</string>
+    <string name="preference_category_experimental">experimentalSettings</string>
     <string name="preference_key_sync_reading_lists">syncReadingLists</string>
     <string name="preference_key_reading_list_sync_reminder_enabled">readingListSyncReminder</string>
     <string name="preference_key_reading_list_login_reminder_enabled">readingListLoginReminder</string>
+    <string name="preference_key_reading_lists_remote_setup_pending">readingListsRemoteSetupPending</string>
     <string name="preference_key_reading_lists_remote_delete_pending">readingListsRemoteDeletePending</string>
     <string name="preference_key_initial_onboarding_enabled">initialOnboardingEnabled</string>
     <string name="preference_key_reading_lists_current_user_hash">readingListsCurrentUserHash</string>
@@ -68,6 +70,15 @@
     <string name="preference_key_feed_cards_order">feedCardsOrder</string>
     <string name="preference_key_feed_cards_enabled">feedCardsEnabled</string>
     <string name="preference_key_feed_customize_onboarding_card_enabled">feedCustomizeOnboardingCardEnabled</string>
+    <string name="preference_key_feed_readinglists_sync_onboarding_card_enabled">feedReadingListsSyncOnboardingCardEnabled</string>
     <string name="preference_key_add_articles">addArticles</string>
     <string name="preference_key_add_reading_lists">addReadingLists</string>
+    <string name="preference_key_delete_reading_lists">deleteReadingLists</string>
+    <string name="preference_key_delete_test_reading_lists">deleteTestReadingLists</string>
+    <string name="preference_key_reading_lists_last_sync_time">readingListsLastSyncTime</string>
+    <string name="preference_key_reading_lists_deleted_ids">readingListsDeletedIds</string>
+    <string name="preference_key_reading_list_pages_deleted_ids">readingListPagesDeletedIds</string>
+    <string name="preference_key_show_reading_lists_sync_prompt">showReadingListsSyncPrompt</string>
+    <string name="preference_key_show_reading_lists_merge_prompt">showReadingListsMergePrompt</string>
+    <string name="preference_key_reading_lists_first_time_sync">readingListsFirstTimeSync</string>
 </resources>

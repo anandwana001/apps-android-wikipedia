@@ -73,6 +73,7 @@
         <activity
             android:name=".main.MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.Splash"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -104,10 +105,11 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <!-- the following lines are merged
+                     https://developer.android.com/training/app-links/deep-linking.html
+                     so http and https apply to all prefixes-->
                 <data android:host="*.wikipedia.org" android:pathPrefix="/wiki/" android:scheme="http" />
-                <data android:host="*.wikipedia.org" android:pathPrefix="/wiki/" android:scheme="https" />
-                <data android:host="*.wikipedia.org" android:pathPrefix="/zh" android:pathPattern="-.*/" android:scheme="http" />
-                <data android:host="*.wikipedia.org" android:pathPrefix="/zh" android:pathPattern="-.*/" android:scheme="https" />
+                <data android:host="*.wikipedia.org" android:pathPattern="/zh-.*" android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="org.wikipedia.app_shortcut" />
@@ -176,10 +178,6 @@
                 <data android:pathPrefix="/android_asset/licenses/" android:scheme="content" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".useroption.ui.UserOptionRowActivity"
-            android:theme="@style/AppTheme.ActionBar"
-            android:label="@string/user_option_activity_title" />
 
         <activity
             android:name=".feed.news.NewsActivity" />
@@ -232,7 +230,8 @@
             android:name=".feed.mostread.MostReadArticlesActivity"
             android:theme="@style/AppTheme.ActionBar"/>
 
-        <activity android:name=".feed.onthisday.OnThisDayActivity" />
+        <activity android:name=".feed.onthisday.OnThisDayActivity"
+            android:configChanges="orientation|screenSize"/>
 
         <activity android:name=".feed.configure.ConfigureActivity"
             android:label="@string/feed_configure_activity_title"
@@ -252,8 +251,8 @@
             android:exported="false" />
 
         <provider
-            android:authorities="@string/user_option_authority"
-            android:name=".database.UserOptionContentProvider"
+            android:authorities="@string/reading_lists_authority"
+            android:name=".database.ReadingListsContentProvider"
             android:exported="false"
             android:syncable="true"
             android:label="@string/user_option_sync_label" />
@@ -325,7 +324,7 @@
         </receiver>
 
         <service
-            android:name=".useroption.sync.UserOptionSyncService"
+            android:name=".readinglist.sync.ReadingListSyncService"
             android:exported="false">
 
             <intent-filter>
@@ -334,7 +333,7 @@
 
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/user_option_sync_adapter" />
+                android:resource="@xml/reading_list_sync_adapter" />
 
         </service>
 

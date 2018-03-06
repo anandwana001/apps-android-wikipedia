@@ -1,6 +1,5 @@
 package org.wikipedia.offline;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,7 +35,7 @@ import butterknife.Unbinder;
 
 import static org.wikipedia.offline.CompilationDetailActivity.EXTRA_COMPILATION;
 import static org.wikipedia.util.DateUtil.getShortDateString;
-import static org.wikipedia.util.FileUtil.bytesToGB;
+import static org.wikipedia.util.FileUtil.bytesToUserVisibleUnit;
 
 public class CompilationDetailFragment extends DownloadObserverFragment {
     @BindView(R.id.compilation_detail_toolbar) Toolbar toolbar;
@@ -81,19 +80,14 @@ public class CompilationDetailFragment extends DownloadObserverFragment {
         gradientView.setBackground(GradientUtil.getPowerGradient(R.color.black54, Gravity.TOP));
         imageView.loadImage(compilation.featureImageUri());
         nameView.setText(compilation.name());
-        dateSizeView.setText(String.format(getString(R.string.offline_compilation_detail_date_size),
-                getShortDateString(compilation.date()), bytesToGB(compilation.size())));
+        dateSizeView.setText(getString(R.string.offline_compilation_detail_date_size_v2,
+                getShortDateString(compilation.date()), bytesToUserVisibleUnit(getContext(), compilation.size())));
         summaryView.setText(compilation.summary());
         descriptionView.setText(compilation.description());
-        downloadButton.setText(String.format(getString(R.string.offline_compilation_detail_button_download),
-                bytesToGB(compilation.size())));
+        downloadButton.setText(getString(R.string.offline_compilation_detail_button_download_v2,
+                bytesToUserVisibleUnit(getContext(), compilation.size())));
 
-        controls.setCallback(new CompilationDownloadControlView.Callback() {
-            @Override
-            public void onCancel() {
-                getDownloadObserver().remove(compilation);
-            }
-        });
+        controls.setCallback(() -> getDownloadObserver().remove(compilation));
 
         mainPageButton.setText(MainPageNameData.valueFor(WikipediaApp.getInstance().getAppLanguageCode()));
         updateDownloadState(true, null);
@@ -133,12 +127,7 @@ public class CompilationDetailFragment extends DownloadObserverFragment {
     }
 
     @OnClick(R.id.button_compilation_detail_remove) void onRemoveClick() {
-        getDownloadObserver().removeWithConfirmation(getActivity(), compilation, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getAppCompatActivity().finish();
-            }
-        });
+        getDownloadObserver().removeWithConfirmation(getActivity(), compilation, (dialog, which) -> getAppCompatActivity().finish());
     }
 
     private AppCompatActivity getAppCompatActivity() {

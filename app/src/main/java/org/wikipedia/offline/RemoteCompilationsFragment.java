@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static org.wikipedia.util.DateUtil.getShortDateString;
-import static org.wikipedia.util.FileUtil.bytesToGB;
+import static org.wikipedia.util.FileUtil.bytesToUserVisibleUnit;
 
 public class RemoteCompilationsFragment extends DownloadObserverFragment {
     @BindView(R.id.compilation_list_toolbar_container) CollapsingToolbarLayout toolbarLayout;
@@ -92,19 +92,9 @@ public class RemoteCompilationsFragment extends DownloadObserverFragment {
         recyclerView.addItemDecoration(new DrawableItemDecoration(getContext(), R.attr.list_separator_drawable));
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
-        errorView.setRetryClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                beginUpdate();
-            }
-        });
+        errorView.setRetryClickListener((v) -> beginUpdate());
 
-        errorView.setBackClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        errorView.setBackClickListener((v) -> getActivity().finish());
 
         beginUpdate();
         return view;
@@ -205,12 +195,7 @@ public class RemoteCompilationsFragment extends DownloadObserverFragment {
                     DimenUtil.roundedDpToPx(DimenUtil.getDimension(R.dimen.activity_horizontal_margin)),
                     DimenUtil.roundedDpToPx(DimenUtil.getDimension(R.dimen.list_item_footer_padding)));
             controlView.setBackgroundColor(ResourceUtil.getThemedColor(getContext(), android.R.attr.colorBackground));
-            controlView.setCallback(new CompilationDownloadControlView.Callback() {
-                @Override
-                public void onCancel() {
-                    getDownloadObserver().remove(compilation);
-                }
-            });
+            controlView.setCallback(() -> getDownloadObserver().remove(compilation));
         }
 
         void bindItem(Compilation compilation) {
@@ -233,8 +218,8 @@ public class RemoteCompilationsFragment extends DownloadObserverFragment {
             this.compilation = compilation;
             getView().setItem(compilation);
             getView().setTitle(compilation.name());
-            getView().setDescription(String.format(getString(R.string.offline_compilation_detail_date_size),
-                    getShortDateString(compilation.date()), bytesToGB(compilation.size())));
+            getView().setDescription(getString(R.string.offline_compilation_detail_date_size_v2,
+                    getShortDateString(compilation.date()), bytesToUserVisibleUnit(getContext(), compilation.size())));
             getView().setImageUrl(compilation.thumbUri() == null ? null : compilation.thumbUri().toString());
             getView().setActionIcon(R.drawable.ic_more_vert_white_24dp);
             getView().setActionHint(R.string.abc_action_menu_overflow_description);
@@ -363,22 +348,19 @@ public class RemoteCompilationsFragment extends DownloadObserverFragment {
     private void showCompilationOverflowMenu(@NonNull final Compilation compilation, @NonNull View anchorView) {
         PopupMenu menu = new PopupMenu(anchorView.getContext(), anchorView);
         menu.getMenuInflater().inflate(R.menu.menu_remote_compilation_item, menu.getMenu());
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_compilation_download:
-                        if (DeviceUtil.isOnline()) {
-                            if (!getDownloadObserver().isDownloading(compilation)) {
-                                MediaDownloadReceiver.download(getContext(), compilation);
-                            }
-                        } else {
-                            FeedbackUtil.showMessage(getActivity(), R.string.offline_compilation_download_device_offline);
+        menu.setOnMenuItemClickListener((menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_compilation_download:
+                    if (DeviceUtil.isOnline()) {
+                        if (!getDownloadObserver().isDownloading(compilation)) {
+                            MediaDownloadReceiver.download(getContext(), compilation);
                         }
-                        return false;
-                    default:
-                        return false;
-                }
+                    } else {
+                        FeedbackUtil.showMessage(getActivity(), R.string.offline_compilation_download_device_offline);
+                    }
+                    return false;
+                default:
+                    return false;
             }
         });
         menu.show();

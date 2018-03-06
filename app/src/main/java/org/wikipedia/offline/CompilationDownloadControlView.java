@@ -3,7 +3,6 @@ package org.wikipedia.offline;
 import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -23,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static org.wikipedia.util.FileUtil.bytesToGB;
+import static org.wikipedia.util.FileUtil.bytesToUserVisibleUnit;
 
 public class CompilationDownloadControlView extends LinearLayout {
     @BindView(R.id.compilation_download_widget_progress_text) TextView progressText;
@@ -81,8 +80,8 @@ public class CompilationDownloadControlView extends LinearLayout {
             progressBar.setIndeterminate(true);
             timeRemainingText.setVisibility(GONE);
         }
-        progressText.setText(getString(R.string.offline_compilation_download_progress_text,
-                bytesToGB(item.bytesDownloaded()), bytesToGB(item.bytesTotal())));
+        progressText.setText(getString(R.string.offline_compilation_download_progress_text_v2,
+                bytesToUserVisibleUnit(getContext(), item.bytesDownloaded()), bytesToUserVisibleUnit(getContext(), item.bytesTotal())));
         long bytesPerMin = item.bytesPerSec() * TimeUnit.MINUTES.toSeconds(1);
         if (bytesPerMin >= 0) {
             long minsRemaining = (item.bytesTotal() - item.bytesDownloaded()) / bytesPerMin;
@@ -95,12 +94,9 @@ public class CompilationDownloadControlView extends LinearLayout {
     void onCancelClicked() {
         new AlertDialog.Builder(getContext())
                 .setMessage(R.string.compilation_download_cancel_confirm)
-                .setPositiveButton(R.string.compilation_download_cancel_confirm_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (callback != null) {
-                            callback.onCancel();
-                        }
+                .setPositiveButton(R.string.compilation_download_cancel_confirm_yes, (dialog, i) -> {
+                    if (callback != null) {
+                        callback.onCancel();
                     }
                 })
                 .setNegativeButton(R.string.compilation_download_cancel_confirm_no, null)

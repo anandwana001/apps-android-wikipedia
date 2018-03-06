@@ -16,11 +16,11 @@
   <string name="history_item_deleted">%s aus dem Verlauf gelöscht</string>
   <string name="history_items_deleted">%d Artikel aus dem Verlauf gelöscht</string>
   <string name="history_item_delete_undo">Rückgängig</string>
+  <string name="app_settings">App-Einstellungen</string>
   <string name="dialog_title_clear_history">Browsing-Verlauf löschen</string>
   <string name="dialog_message_clear_history">Dies löscht deinen gesamten Browsing-Verlauf und schließt alle derzeit geöffneten Registerkarten. Bist du sicher?</string>
   <string name="dialog_message_clear_history_yes">Ja</string>
   <string name="dialog_message_clear_history_no">Nein</string>
-  <string name="nav_item_saved_pages">Gespeicherte Seiten</string>
   <string name="share_via">Teilen über</string>
   <string name="search_redirect_from">Weiterleitung von %s</string>
   <string name="menu_page_show_tabs">Registerkarten anzeigen</string>
@@ -46,13 +46,13 @@
   <string name="map_view_link_text">Auf einer Karte ansehen</string>
   <string name="language_count_link_text">In %d weiteren Sprachen verfügbar</string>
   <string name="content_license_html">Der Inhalt ist verfügbar unter &lt;a href=\"%1$s\"&gt;CC-BY-SA 3.0&lt;/a&gt;, sofern nicht anders angegeben.</string>
-  <string name="edit_save_action_license_logged_in">Mit dem Speichern stimmst du den &lt;a href=\"%1$s\"&gt;Nutzungsbedingungen&lt;/a&gt; und unwiderruflich der Veröffentlichung deiner Beiträge unter der &lt;a href=\"%2$s\"&gt;CC-BY-SA-3.0-Lizenz&lt;/a&gt; zu.</string>
-  <string name="edit_save_action_license_anon">Mit dem Speichern stimmst du den &lt;a href=\"%1$s\"&gt;Nutzungsbedingungen&lt;/a&gt; und unwiderruflich der Veröffentlichung deiner Beiträge unter der &lt;a href=\"%2$s\"&gt;CC-BY-SA-3.0-Lizenz&lt;/a&gt; zu. Bearbeitungen werden der IP-Adresse deines Gerätes zugeordnet. Wenn du dich &lt;a href=\"https://#login\"&gt;anmeldest&lt;/a&gt;, verfügst du über mehr Datenschutz.</string>
+  <string name="edit_save_action_license_logged_in">Mit dem Speichern stimmst du den &lt;a href=\"%1$s\"&gt;Nutzungsbedingungen&lt;/a&gt; und unwiderruflich der Veröffentlichung deiner Beiträge unter der &lt;a href=\"%2$s\"&gt;CC BY-SA 3.0&lt;/a&gt; Lizenz zu.</string>
+  <string name="edit_save_action_license_anon">Mit dem Speichern stimmst du den &lt;a href=\"%1$s\"&gt;Nutzungsbedingungen&lt;/a&gt; und unwiderruflich der Veröffentlichung deiner Beiträge unter der &lt;a href=\"%2$s\"&gt;CC BY-SA 3.0-Lizenz&lt;/a&gt; zu. Bearbeitungen werden der IP-Adresse deines Gerätes zugeordnet. Wenn du dich &lt;a href=\"https://#login\"&gt;anmeldest&lt;/a&gt;, verfügst du über mehr Datenschutz.</string>
   <string name="preference_title_language">Wikipedia-Sprache</string>
   <string name="preference_languages_filter_hint">Suche</string>
   <string name="langlinks_filter_hint">Suche</string>
   <string name="langlinks_empty">Diese Seite ist nicht in anderen Sprachen verfügbar.</string>
-  <string name="langlinks_no_match">Keine Sprachen mit deiner Suchanfrage gefunden.</string>
+  <string name="langlinks_no_match">Keine zu deiner Suchanfrage passenden Sprachen gefunden.</string>
   <string name="langlinks_activity_title">Andere Sprachen</string>
   <string name="menu_save_changes">Änderungen veröffentlichen</string>
   <string name="dialog_saving_in_progress">Veröffentliche …</string>
@@ -72,9 +72,6 @@
   <string name="edit_section_captcha_hint">Wörter von oben wiederholen</string>
   <string name="title_captcha">Captcha eingeben</string>
   <string name="edit_section_captcha_reload">Tippen zum Aktualisieren des Captchas</string>
-  <string name="edit_saved_page_refresh">Diese gespeicherte Seite könnte veraltet sein und muss zur Aktivierung der Bearbeitung aktualisiert werden. Möchtest du die Seite neu laden?</string>
-  <string name="edit_saved_page_refresh_yes">Ja</string>
-  <string name="edit_saved_page_refresh_no">Nein</string>
   <string name="nav_item_login">Bei Wikipedia anmelden</string>
   <string name="login_username_hint">Benutzername</string>
   <string name="login_password_hint">Passwort</string>
@@ -88,7 +85,7 @@
   <string name="toast_logout_complete">Abgemeldet</string>
   <string name="history_empty_title">Keine kürzlich besuchten Artikel</string>
   <string name="history_empty_message">Verfolge hier, was du gelesen hast.</string>
-  <string name="search_empty_message">Die freie Enzyklopädie in deiner Sprache suchen und lesen</string>
+  <string name="search_empty_message">Die freie Enzyklopädie in deiner Sprache durchsuchen und lesen</string>
   <string name="delete_selected_items">Ausgewählte Elemente löschen</string>
   <string name="wp_stylized">&lt;big&gt;W&lt;/big&gt;IKIPEDI&lt;big&gt;A&lt;/big&gt;</string>
   <string name="create_account_username_hint">Benutzername</string>
@@ -109,29 +106,36 @@
   <string name="create_account_button">Benutzerkonto erstellen</string>
   <string name="preferences_general_heading">Allgemein</string>
   <string name="wikipedia_app_faq">FAQ zur Wikipedia-App</string>
-  <string name="zero_charged_verbiage">Der kostenlose Zugriff auf Wikipedia ist nicht mehr aktiv.</string>
+  <string name="zero_charged_verbiage">Die kostenlose Verbindung zu Wikipedia ist nicht mehr aktiv.</string>
   <string name="zero_warn_when_leaving">Beim Verlassen von Wikipedia Zero warnen</string>
   <string name="zero_warn_when_leaving_summary">Falls dein Mobilfunkbetreiber auf Datenzugriffsgebühren für die Wikipedia-App aufgrund einer Wikipedia-Zero-Partnerschaft verzichtet, wirst du bei Aktivierung dieser Einstellung informiert, wenn du die Wikipedia-App verlässt und Gebühren anfallen können.</string>
-  <string name="zero_webpage_title">Häufig gestellte Fragen zu Wikipedia Zero</string>
+  <string name="zero_webpage_title">FAQ zu Wikipedia Zero</string>
   <string name="zero_wikipedia_zero_heading">Wikipedia Zero</string>
-  <string name="zero_interstitial_title">Wikipedia Zero verlassen</string>
+  <string name="zero_interstitial_title">Wikipedia Zero wird verlassen</string>
   <string name="zero_interstitial_leave_app">Datenübertragungsgebühren können anfallen. Mit der externen Website fortfahren?</string>
   <string name="zero_interstitial_continue">Verlassen</string>
   <string name="zero_interstitial_cancel">Hier bleiben</string>
-  <string name="zero_learn_more">Dein Mobilfunkanbieter hat dir kostenlosen Zugang zu Wikipedia-Inhalten ermöglicht!</string>
+  <string name="zero_learn_more">Dein Mobilfunkanbieter stellt einen kostenlosen Zugang zu Wikipedia-Inhalten bereit!</string>
   <string name="zero_learn_more_learn_more">Mehr erfahren</string>
   <string name="zero_learn_more_dismiss">Ausblenden</string>
   <string name="edit_preview_fetching_dialog_message">Vorschau wird abgerufen …</string>
   <string name="send_feedback">App-Rückmeldung senden</string>
   <string name="create_account_account_created_toast">Benutzerkonto erstellt!</string>
-  <string name="preferences_heading_storage_and_syncing">Speicher und Synchronisierung</string>
+  <string name="preferences_heading_storage_and_syncing">Speichern und Synchronisierung</string>
+  <string name="preferences_heading_syncing">Synchronisierung</string>
+  <string name="preferences_heading_data_usage">Datennutzung</string>
+  <string name="preferences_heading_experimental">Experimentell</string>
   <string name="preference_title_sync_reading_lists">Leselisten synchronisieren</string>
-  <string name="preference_summary_sync_reading_lists">Wikimedia erlauben, deine Leselisten bei jeder Anmeldung zu synchronisieren.</string>
+  <string name="preference_title_sync_reading_lists_from_account">Synchronisierung von Leselisten aktivieren</string>
+  <string name="preference_summary_sync_reading_lists">Synchronisiere Leselisten zwischen unterschiedlichen Geräten durch das Speichern der Listen in dein Wikipedia-Benutzerkonto</string>
+  <string name="preference_summary_sync_reading_lists_from_account">Synchronisiere Leselisten zwischen unterschiedlichen Geräten durch das Speichern der Listen in dein Wikipedia-Benutzerkonto „%s“</string>
+  <string name="preference_dialog_of_turning_off_reading_list_sync_title">Synchronisierte Leselisten von „%s“ entfernen?</string>
+  <string name="preference_dialog_of_turning_off_reading_list_sync_text">Dies wird alle früher synchronisierten Leselisten vollständig aus dem Fernspeicher löschen. Alle synchronisierten Listen aus deinem Benutzerkonto „%s“ entfernen?</string>
   <string name="preferences_privacy_settings_heading">Datenschutz</string>
   <string name="preference_title_eventlogging_opt_in">Nutzungsberichte senden</string>
   <string name="preference_summary_eventlogging_opt_in">Wikimedia erlauben, Informationen über die Verwendung der App zu sammeln, um sie zu verbessern.</string>
   <string name="preference_title_auto_upload_crash_reports">Absturzberichte senden</string>
-  <string name="preference_summary_auto_upload_crash_reports">Erlaubt der App, automatisch Absturzberichte an HockeyApp/einen Drittpartei-Diensteanbieter zu senden, so dass wir deinen Absturz überprüfen und den Fehler schneller und einfacher beheben können.</string>
+  <string name="preference_summary_auto_upload_crash_reports">Der App erlauben, automatisch Absturzberichte an HockeyApp/einen ausgelagerten Dienstleistungsanbieter zu senden, so dass wir deinen Absturz überprüfen und den Fehler schneller und einfacher beheben können.</string>
   <string name="editing_error_spamblacklist">Es wurden Links zu gesperrten Domains (%s) entdeckt. Bitte entferne sie und versuche es erneut.</string>
   <string name="history_search_list_hint">Verlauf durchsuchen</string>
   <string name="error_can_not_process_link">Dieser Link konnte nicht angezeigt werden</string>
@@ -149,6 +153,7 @@
   <string name="about_wikipedia_url">https://de.m.wikipedia.org/wiki/Wikipedia:Über_Wikipedia</string>
   <string name="privacy_policy_url" fuzzy="true">https://meta.wikimedia.org/wiki/Privacy_policy/de</string>
   <string name="offline_reading_and_data_url">https://www.mediawiki.org/wiki/Special:MyLanguage/Wikimedia_Apps/Android_FAQ#Offline_reading_and_data</string>
+  <string name="android_app_faq_url">https://www.mediawiki.org/wiki/Wikimedia_Apps/Android_FAQ/de</string>
   <string name="terms_of_use_url">https://wikimediafoundation.org/wiki/Terms_of_Use/de</string>
   <string name="cc_by_sa_3_url">https://creativecommons.org/licenses/by-sa/3.0/deed.de</string>
   <string name="cc_0_url">https://creativecommons.org/publicdomain/zero/1.0/deed.de</string>
@@ -157,7 +162,7 @@
   <string name="about_translators_heading">Übersetzer</string>
   <string name="about_translators_translatewiki">Diese App wurde von freiwilligen Übersetzern auf &lt;a href=\"https://translatewiki.net\"&gt;translatewiki.net&lt;/a&gt; übersetzt.</string>
   <string name="about_app_license_heading">Lizenz</string>
-  <string name="about_app_license">Der Quellcode ist verfügbar bei &lt;a href=\"https://gerrit.wikimedia.org/r/#/admin/projects/apps/android/wikipedia\"&gt;Gerrit&lt;/a&gt; und &lt;a href=\"https://github.com/wikimedia/apps-android-wikipedia\"&gt;GitHub&lt;/a&gt; unter der &lt;a href=\"https://phabricator.wikimedia.org/diffusion/APAW/browse/master/COPYING?view=raw\"&gt;Apache-2.0-Lizenz&lt;/a&gt;. Sofern nicht anders angegeben, ist der Inhalt verfügbar unter einer &lt;a href=\"https://de.wikipedia.org/wiki/Wikipedia:Lizenzbestimmungen_Creative_Commons_Attribution-ShareAlike_3.0_Unported\"&gt;Creative-Commons-Attribution-ShareAlike-Lizenz&lt;/a&gt;.</string>
+  <string name="about_app_license">Der Quellcode ist bei &lt;a href=\"https://gerrit.wikimedia.org/r/#/admin/projects/apps/android/wikipedia\"&gt;Gerrit&lt;/a&gt; und &lt;a href=\"https://github.com/wikimedia/apps-android-wikipedia\"&gt;GitHub&lt;/a&gt; unter der &lt;a href=\"https://phabricator.wikimedia.org/diffusion/APAW/browse/master/COPYING?view=raw\"&gt;Apache-2.0-Lizenz&lt;/a&gt; abrufbar. Sofern nicht anders angegeben, ist der Inhalt unter einer &lt;a href=\"https://de.wikipedia.org/wiki/Wikipedia:Lizenzbestimmungen_Creative_Commons_Attribution-ShareAlike_3.0_Unported\"&gt;Creative-Commons-Attribution-ShareAlike-Lizenz&lt;/a&gt; verfügbar.</string>
   <string name="about_wmf">Ein Produkt der &lt;a href=\"http://m.wikimediafoundation.org/wiki/Home\"&gt;Wikimedia Foundation&lt;/a&gt;</string>
   <string name="about_activity_title">Über</string>
   <string name="edit_abandon_confirm">Die Seite wurde verändert. Bist du sicher, dass du sie ohne Speichern deiner Änderungen verlassen möchtest?</string>
@@ -177,6 +182,8 @@
   <string name="edit_summary_tag_other_hint">Andere Wege, wie du die Seite verbessert hast</string>
   <string name="find_next">Nächste finden</string>
   <string name="find_previous">Vorherige finden</string>
+  <string name="find_first_occurence">Dies ist das erste Auftreten</string>
+  <string name="find_last_occurence">Dies ist das letzte Auftreten</string>
   <string name="abusefilter_title_warn">Dies könnte eine unkonstruktive Bearbeitung sein. Bist du sicher, dass du sie veröffentlichen möchtest?</string>
   <string name="abusefilter_title_disallow">Du kannst diese Bearbeitung nicht veröffentlichen. Bitte gehe zurück und ändere sie ab.</string>
   <string name="abusefilter_text_warn">Ein automatischer Filter hat diese Bearbeitung als potenziell unkonstruktiv identifiziert. Sie könnte eine oder mehrere der folgenden Dinge beinhalten:&lt;br /&gt;&lt;br /&gt;· Eingeben aller Kapitälchen&lt;br /&gt;· Artikel leeren oder Einbringen von Spam&lt;br /&gt;· Irrelevante externe Links oder Bilder&lt;br /&gt;· Wiederholte Zeichen</string>
@@ -244,7 +251,7 @@
   <string name="button_continue_to_article">Artikel lesen</string>
   <string name="button_add_to_reading_list">Zur Leseliste hinzufügen</string>
   <string name="page_offline_notice_cannot_load_while_offline">Der Artikel kann nicht geladen werden, während du offline bist.</string>
-  <string name="page_offline_notice_add_to_reading_list">Hinweis: Füge den Artikel zu einer Leseliste hinzu und er wird heruntergeladen, sobald du wieder online bist.</string>
+  <string name="page_offline_notice_add_to_reading_list">Tipp: Füge den Artikel zu einer Leseliste hinzu, dann wird er heruntergeladen, sobald du wieder online bist.</string>
   <string name="page_offline_notice_last_date">Du liest eine Offline-Version dieses Artikels, die am %s gespeichert wurde.</string>
   <string name="page_offline_notice_compilation_download_date">Du liest die Version dieses Artikels von %1$s • %2$s.</string>
   <string name="button_get_directions">Richtungen abrufen</string>
@@ -264,8 +271,6 @@
   <string name="error_page_does_not_exist">Diese Seite ist nicht vorhanden</string>
   <string name="view_wiki_error_message_offline">Es konnte keine Verbindung mit dem Internet hergestellt werden</string>
   <string name="reference_title">Einzelnachweis %s</string>
-  <string name="preference_title_dim_dark_mode_images">Bilder im dunklen Farbschema dimmen</string>
-  <string name="preference_summary_dim_dark_mode_images">Die Helligkeit von Bildern bei der Verwendung des dunklen Farbschemas reduzieren</string>
   <string name="theme_chooser_dialog_image_dimming_switch_label">Bilddimmung (im dunklen Farbschema)</string>
   <string name="preference_title_prefer_offline_content">Offline-Inhalt bevorzugen</string>
   <string name="preference_summary_prefer_offline_content">Datennutzung durch das Laden von offline verfügbaren Artikeln einsparen und nicht immer die aktuelle Artikelversion laden.</string>
@@ -292,7 +297,6 @@
   <string name="color_theme_test_title">Beispieltext</string>
   <string name="color_theme_test_text">Ziehe den Schieber, um die Größe des Textes zu ändern, der für das Lesen von Artikeln verwendet wird. Um die Textgröße auch für den Rest der App festzulegen, ändere die Systemtextgröße.</string>
   <string name="preference_title_app_theme">Farbschema der App</string>
-  <string name="preference_title_color_theme">Dunkles Farbschema</string>
   <string name="preference_summary_color_theme">Wechsle zur Verwendung der App in einem dunklen Farbschema</string>
   <string name="text_size_increase">Text vergrößern</string>
   <string name="text_size_decrease">Text verkleinern</string>
@@ -304,7 +308,6 @@
   <string name="reading_list_title_exists">Die Leseliste „%s“ ist bereits vorhanden.</string>
   <string name="reading_list_entry_empty">Bitte einen Titel eingeben.</string>
   <string name="reading_list_added_to_named">Zu %s hinzugefügt.</string>
-  <string name="reading_list_added_to_unnamed">Zur Leseliste hinzugefügt.</string>
   <string name="reading_list_already_exists">Dieser Artikel ist bereits in dieser Liste.</string>
   <string name="reading_list_added_view_button">Liste ansehen</string>
   <string name="format_reading_list_statistical_summary_singular">Ein Artikel, %1$.2f MB</string>
@@ -314,8 +317,10 @@
   <string name="reading_list_sort">Sortieren</string>
   <string name="reading_list_sort_by_name">Nach Name sortieren</string>
   <string name="reading_list_sort_by_name_desc">Nach Name sortieren (umgekehrt)</string>
-  <string name="reading_list_sort_by_recent">Nach zuletzt gelesen sortieren</string>
-  <string name="reading_list_sort_by_recent_desc">Nach zuletzt gelesen sortieren (umgekehrt)</string>
+  <string name="reading_list_sort_by_recent">Nach Hinzufügungsdatum sortieren (neueste)</string>
+  <string name="reading_list_sort_by_recent_desc">Nach Hinzufügungsdatum sortieren (älteste)</string>
+  <string name="reading_list_sort_by_created">Nach Erstellungsdatum sortieren (neueste)</string>
+  <string name="reading_list_sort_by_created_desc">Nach Erstellungsdatum sortieren (älteste)</string>
   <string name="reading_list_menu_delete">Liste löschen</string>
   <string name="reading_list_menu_rename">Umbenennen</string>
   <string name="reading_list_menu_edit_description">Beschreibung bearbeiten</string>
@@ -331,9 +336,9 @@
   <string name="reading_list_items_deleted">%d Artikel aus der Liste entfernt</string>
   <string name="reading_list_item_delete_undo">Rückgängig</string>
   <string name="reading_list_deleted">%s gelöscht</string>
-  <string name="reading_lists_empty">Es gibt noch keine Leselisten.</string>
-  <string name="reading_lists_empty_message">Speichere Artikel in Leselisten, so dass du sie später ansehen kannst, auch wenn du offline bist.</string>
-  <string name="reading_lists_onboarding_intro">Erstelle Leselisten von Artikeln, die du später lesen möchtest, auch wenn du offline bist!</string>
+  <string name="saved_list_empty_title">Es sind noch keine Leselisten vorhanden.</string>
+  <string name="reading_lists_empty_message">Füge Artikel einer Liste zum späteren Lesen hinzu, auch wenn du offline bist.</string>
+  <string name="reading_lists_onboarding_intro">Füge Artikel einer Liste zum späteren Lesen hinzu, auch wenn du offline bist!</string>
   <string name="reading_lists_onboarding_for_example">Zum Beispiel</string>
   <string name="reading_lists_onboarding_example1">Zu besuchende Orte</string>
   <string name="reading_lists_onboarding_example2">Lieblingstiere</string>
@@ -349,18 +354,48 @@
   <string name="reading_list_confirm_remove_article_from_offline">Von der Offlineliste entfernen</string>
   <string name="reading_list_confirm_remove_article_from_offline_title">Der Artikel erscheint in mehreren Listen</string>
   <string name="reading_list_confirm_remove_article_from_offline_message">%s ist für keine Leseliste mehr offline verfügbar:</string>
-  <string name="reading_list_sync_reminder_title">Die Synchronisierung von Leselisten ist ausgeschaltet</string>
-  <string name="reading_list_sync_reminder_text">Deine Leselisten können mit deinem Wikipedia-Benutzerkonto synchronisiert werden, wenn du dies in den App-Einstellungen erlaubst.</string>
-  <string name="reading_list_sync_reminder_action">Anschalten</string>
+  <string name="reading_lists_sync_reminder_title">Synchronisierung von Leselisten anschalten?</string>
+  <string name="reading_lists_sync_reminder_text">Artikel, die in Leselisten gespeichert sind, können jetzt mit deinem Wikipedia-Benutzerkonto synchronisiert werden. &lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Android_FAQ#Synced_reading_lists\"&gt;Mehr erfahren&lt;/a&gt;</string>
+  <string name="reading_lists_sync_reminder_action">Synchronisierung aktivieren</string>
   <string name="reading_list_login_reminder_title">Leselisten synchronisieren</string>
-  <string name="reading_list_login_reminder_text">Deine Leselisten können jetzt in dein Wikipedia-Benutzerkonto gespeichert werden. Melde dich einfach bei deinem Benutzerkonto an und deine Leselisten werden automatisch synchronisiert.</string>
+  <string name="reading_lists_login_reminder_text">Leselisten können jetzt zwischen Geräten synchronisiert werden. Melde dich bei deinem Wikipedia-Benutzerkonto an und erlaube die Speicherung deiner Listen.</string>
   <string name="reading_lists_confirm_remote_delete">Dies wird alle bisherigen synchronisierten Leselisten aus dem Fernspeicher löschen. Fortfahren?</string>
   <string name="reading_lists_confirm_remote_delete_yes">Ja</string>
   <string name="reading_lists_confirm_remote_delete_no">Nein</string>
   <string name="reading_list_article_save_in_progress">Der Artikel wird derzeit heruntergeladen und wird offline verfügbar sein, wenn der Download abgeschlossen ist.</string>
   <string name="reading_list_already_contains_selection">Die ausgewählte Liste enthält bereits alle der ausgewählten Seiten.</string>
-  <string name="reading_list_added_articles_list_untitled">%d Artikel zur Leseliste hinzugefügt.</string>
   <string name="reading_list_added_articles_list_titled">%1$d Artikel zu %2$s hinzugefügt</string>
+  <string name="reading_list_delete_confirm">Bist du sicher, dass du %s löschen möchtest?</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_title">Melde dich an, um die Synchronisierung zu aktivieren.</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_text">Melde dich an, um die Speicherung deiner Leselisten in deinem Benutzerkonto zu erlauben.</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_cancel">Abbrechen</string>
+  <string name="reading_list_preference_login_to_enable_sync_dialog_login">Anmelden</string>
+  <string name="reading_list_turned_sync_off_dialog_title">Synchronisierung von Leselisten ausgeschaltet</string>
+  <string name="reading_list_turned_sync_off_dialog_text">Die Synchronisierung von Leselisten ist für dein Benutzerkonto ausgeschaltet und gespeicherte Artikel werden auf deinen angemeldeten Geräten nicht mehr gesichert. Schalte die Synchronisierung von Leselisten in den Einstellungen an.</string>
+  <string name="reading_list_turned_sync_off_dialog_ok">Okay</string>
+  <string name="reading_list_turned_sync_off_dialog_settings">Einstellungen</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_title">Synchronisierung von Leselisten anschalten?</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_text">In Leselisten gespeicherte Artikel können jetzt mit deinem Wikipedia-Benutzerkonto synchronisiert werden. &lt;a href=\"#faq\"&gt;Mehr erfahren&lt;/a&gt;</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_do_not_show">Diese Nachricht nicht erneut anzeigen</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_enable_syncing">Synchronisierung aktivieren</string>
+  <string name="reading_list_prompt_turned_sync_on_dialog_no_thanks">Nein danke</string>
+  <string name="reading_list_login_option_reminder_dialog_title">Artikel für Leselisten gefunden</string>
+  <string name="reading_list_login_option_reminder_dialog_text">Artikel waren in der Leseliste gespeichert, während du abgemeldet warst. Möchtest du sie zu den Leselisten in deinem Benutzerkonto hinzufügen?</string>
+  <string name="reading_list_login_option_reminder_dialog_yes">Ja, zu meinen Leselisten hinzufügen</string>
+  <string name="reading_list_login_option_reminder_dialog_no">Nein, Artikel löschen</string>
+  <string name="reading_list_logout_option_reminder_dialog_title">Gespeicherte Artikel in der App behalten?</string>
+  <string name="reading_list_logout_option_reminder_dialog_text">Es sind derzeit in Leselisten gespeicherte Artikel vorhanden. Möchtest du sie nach der Abmeldung behalten?</string>
+  <string name="reading_list_logout_option_reminder_dialog_yes">Ja, Artikel in den Listen behalten</string>
+  <string name="reading_list_logout_option_reminder_dialog_no">Nein, Artikel aus den Listen löschen</string>
+  <string name="default_reading_list_name">Gespeichert</string>
+  <string name="default_reading_list_description">Standardliste für deine gespeicherten Artikel</string>
+  <string name="no_user_lists_title">Artikel in Listen organisieren</string>
+  <string name="no_user_lists_msg">Erstelle Listen für Reiseziele, Lieblingsthemen und vieles mehr</string>
+  <string name="reading_list_saved_list_rename">%1$s (vom Benutzer erstellt)</string>
+  <string name="split_reading_list_message">Es gibt eine Begrenzung auf %d Artikel pro Leseliste. Vorhandene Listen mit mehr als dieser Anzahl wurden in mehrere Listen aufgeteilt.</string>
+  <string name="reading_list_article_limit_message">Der Artikel konnte nicht zu dieser Liste hinzugefügt werden. Du hast für „%1$s“ die maximale Anzahl von %2$d Artikeln pro Liste erreicht.</string>
+  <string name="reading_lists_limit_message">Es können keine weiteren Listen erstellt werden. Du hast die maximale Anzahl von 100 Leselisten pro Benutzerkonto erreicht.</string>
+  <string name="feed_reading_lists_sync_onboarding_text">&lt;strong&gt;Leselisten synchronisieren&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Leselisten können jetzt zwischen Geräten synchronisiert werden. Melde dich bei deinem Wikipedia-Benutzerkonto an und erlaube die Speicherung deiner Listen.</string>
   <plurals name="reading_list_article_offline_message">
     <item quantity="one">Dieser Artikel ist jetzt offline verfügbar.</item>
     <item quantity="other">Diese Artikel sind jetzt offline verfügbar.</item>
@@ -378,17 +413,17 @@
   <string name="notification_thanks_title">Du hast ein Dankeschön erhalten!</string>
   <string name="notification_thanks">&lt;em&gt;%1$s&lt;/em&gt; hat sich für deine Bearbeitung auf der Seite &lt;strong&gt;%2$s&lt;/strong&gt; bedankt</string>
   <string name="notification_channel_name">Synchronisieren</string>
-  <string name="notification_channel_description">Synchronisierungsfortschritt</string>
-  <string name="notification_syncing_title">Synchronisiere %1$d Artikel …</string>
+  <string name="notification_channel_description">Downloadfortschritt</string>
+  <string name="notification_syncing_title">Lade %1$d Artikel herunter …</string>
   <string name="notification_syncing_description">%1$d Artikel verbleibend</string>
   <string name="notification_syncing_pause_button">Pausieren</string>
   <string name="notification_syncing_resume_button">Fortfahren</string>
   <string name="notification_syncing_cancel_button">Abbrechen</string>
   <string name="view_continue_reading_card_title">Mit dem Lesen fortfahren</string>
-  <string name="view_because_you_read_card_title">Weil du liest</string>
+  <string name="view_because_you_read_card_title">Weil du das gelesen hast</string>
   <string name="view_random_card_title">Zufallsgenerator</string>
   <string name="view_random_card_subtitle">Durch zufällige Artikel aus der Wikipedia blättern.</string>
-  <string name="view_random_card_action">Den Würfel rollen</string>
+  <string name="view_random_card_action">Würfeln</string>
   <string name="view_next_random_article">Einen anderen zufälligen Artikel laden</string>
   <string name="view_main_page_card_title">Heute auf der Wikipedia</string>
   <string name="view_main_page_card_subtitle">Hauptseite auf %s</string>
@@ -400,7 +435,6 @@
   <string name="menu_feed_overflow_label">Weitere Optionen</string>
   <string name="feed_featured_image_share_subject">Vorgestelltes Bild von Wikimedia Commons</string>
   <string name="feed">Entdecken</string>
-  <string name="view_card_footer_button">Mehr sehen</string>
   <string name="most_read_list_card_title">Beliebt</string>
   <string name="view_static_card_icon_content_description">Kartensymbol</string>
   <string name="view_card_news_title">In den Nachrichten</string>
@@ -415,7 +449,6 @@
   <string name="view_featured_article_card_title">Vorgestellter Artikel</string>
   <string name="view_featured_article_footer_save_button_label">Speichern</string>
   <string name="view_featured_article_footer_saved_button_label">Gespeichert</string>
-  <string name="feed_configure_menu_title">Karten konfigurieren</string>
   <string name="feed_configure_activity_title">Den Feed anpassen</string>
   <string name="feed_configure_menu_reset">Standardansicht wiederherstellen</string>
   <string name="feed_configure_menu_select_all">Alle auswählen</string>
@@ -472,8 +505,8 @@
   <string name="description_edit_revert_history">Falls du interessiert bist, sieh dir die &lt;a href=\"%1$s\"&gt;Versionsgeschichte&lt;/a&gt; an.</string>
   <string name="offline_compilation_download_device_offline">Keine Internetverbindung. Stelle sicher, dass du wieder online bist und versuche es erneut.</string>
   <string name="offline_read_permission_rationale">Zum Offline-Browsen ist eine Berechtigung für den Zugriff auf den Speicher deines Gerätes erforderlich.</string>
+  <string name="offline_read_final_rationale">Es ist die Berechtigung zum Zugriff auf deinen Gerätespeicher erforderlich, um die Offline-Bibliothek zu nutzen.</string>
   <string name="offline_read_permission_error">Die Berechtigung zum Lesen vom Gerätespeicher wurde nicht gewährt.</string>
-  <string name="offline_card_text">Du benutzt jetzt Wikipedia offline mit Artikeln in deiner Offline-Bibliothek.</string>
   <string name="offline_card_sideloading_text">Du durchstöberst jetzt Wikipedia offline aufgrund der Artikelpakete in deiner Offline-Bibliothek.</string>
   <string name="offline_my_compilations">Meine Offline-Bibliothek verwalten</string>
   <string name="offline_compilations_title">Offline-Bibliothek</string>
@@ -482,15 +515,16 @@
   <string name="offline_compilations_add">Zu meiner Offline-Bibliothek hinzufügen</string>
   <string name="remote_compilations_title">Offline-Bibliothek</string>
   <string name="remote_compilations_description">Mit der Offline-Bibliothek kannst du jetzt Artikelpakete zum Lesen herunterladen, wenn du keine verfügbare Internetverbindung hast.</string>
-  <string name="offline_compilation_detail_date_size">%1$s • %2$.2f GB</string>
-  <string name="offline_compilation_detail_button_download">Herunterladen • %.2f GB</string>
+  <string name="offline_compilation_detail_date_size_v2">%1$s • %2$s</string>
+  <string name="size_gb">%.2f GB</string>
+  <string name="size_mb">%.2f MB</string>
+  <string name="offline_compilation_detail_button_download_v2">Herunterladen • %s</string>
   <string name="offline_compilation_detail_button_remove">Entfernen</string>
   <string name="remote_compilation_download">Herunterladen</string>
-  <string name="storage_size">%.2f GB</string>
-  <string name="storage_size_free">%.2f GB frei</string>
+  <string name="storage_size_free_v2">%s frei</string>
   <string name="storage_used_by_compilations">von der Offline-Bibliothek verwendet</string>
   <string name="storage_other_apps">Andere Anwendungen</string>
-  <string name="offline_compilation_download_progress_text">%1$.2f GB von %2$.2f GB</string>
+  <string name="offline_compilation_download_progress_text_v2">%1$s von %2$s</string>
   <plurals name="offline_compilation_download_time_remaining">
     <item quantity="one">Noch eine Minute</item>
     <item quantity="other">Noch %d Minuten</item>
@@ -504,14 +538,11 @@
   <string name="compilation_remove_confirm">Möchtest du dies von deiner Offline-Bibliothek entfernen?</string>
   <string name="offline_library_title">Offline-Bibliothek</string>
   <string name="offline_library_empty_title">Es befindet sich nichts in deiner Offline-Bibliothek</string>
-  <string name="offline_library_empty_description">Wähle ein Paket mit Wikipedia-Artikeln aus, um es jetzt herunterzuladen und später darauf offline zuzugreifen.</string>
   <string name="offline_library_empty_description_sideload">„Artikelpakete“ in deiner Offline-Bibliothek sind vorbepackte Artikelsätze für geeigneten Speicher auf deinem Gerät, so dass du mit dem Lesen fortfahren kannst, wenn du offline bist.&lt;br /&gt;&lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support\"&gt;Mehr erfahren&lt;/a&gt;</string>
   <string name="offline_library_packs_hint">Artikelpakete in deiner Bibliothek bleiben zum Lesen verfügbar, wenn du offline bist. &lt;a href=\"https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support\"&gt;Mehr erfahren&lt;/a&gt;</string>
   <string name="offline_library_data_usage_hint">Möchtest du Datenverbrauch einsparen? Wähle „Offline-Inhalte bevorzugen“ in den Einstellungen aus, um verfügbare Offline-Artikel zuerst anzuzeigen, auch wenn du nicht mit dem Internet verbunden bist. &lt;a href=\"#settings\"&gt;Zu den Einstellungen gehen&lt;/a&gt;</string>
   <string name="offline_library_empty_search">Offline-Bibliothek durchsuchen</string>
   <string name="offline_library_search_results_state">Ergebnisse von deiner Offline-Bibliothek suchen</string>
-  <string name="offline_library_onboarding_action">Mehr erfahren</string>
-  <string name="offline_library_onboarding_text">Einführung in die Offline-Bibliothek – Lade jetzt Artikelpakete zum späteren Offline-Lesen herunter.</string>
   <string name="offline_library_onboarding_button_done">Fertig</string>
   <string name="offline_library_onboarding_build_library_title">Erstelle deine Offline-Bibliothek</string>
   <string name="offline_library_onboarding_build_library_subtitle">Lade Wikipedia-Artikelpakete jetzt zum späteren datenfreien Zugriff herunter.</string>
@@ -531,9 +562,9 @@
   <string name="onboarding_save_to_reading_lists_text">Erstelle Leselisten von Artikeln, die du später lesen möchtest, auch wenn du offline bist.</string>
   <string name="onboarding_reading_list_sync_title">Leselisten mit Synchronisierung</string>
   <string name="onboarding_reading_list_sync_text">Erstelle Leselisten von Artikeln, die du später lesen möchtest, auch wenn du offline bist. &lt;a href=\"#login\"&gt;Melde dich an oder erstelle&lt;/a&gt; ein Wikipedia-Benutzerkonto, damit deine Leselisten immer gesichert werden.</string>
+  <string name="onboarding_reading_list_sync_text_v2">Du kannst Leselisten von Artikeln erstellen, die du später lesen möchtest, auch wenn du offline bist. &lt;br/&gt;Melde dich bei deinem Wikipedia-Benutzerkonto an, um deine Leselisten zu synchronisieren. &lt;a href=\"#login\"&gt;Wikipedia beitreten&lt;/a&gt;</string>
   <string name="onboarding_analytics_title">Anonymisierte Daten senden</string>
-  <string name="onboarding_analytics_text">Hilf mit, die App besser zu machen, indem du uns wissen lässt, wie du sie nutzt. Die gesammelten Daten sind anonym. &lt;a href=\"#privacy\"&gt;Mehr erfahren&lt;/a&gt;</string>
-  <string name="onboarding_analytics_offline_text">Hilf uns dabei, die App zu verbessern, indem du uns wissen lässt, wie du sie nutzt. Die gesammelten Daten sind anonym. &lt;a href=\"#offline\"&gt;Mehr erfahren&lt;/a&gt;</string>
+  <string name="onboarding_analytics_offline_text">Hilf uns dabei, die App zu verbessern, indem du uns wissen lässt, wie du sie nutzt. Die gesammelten Daten sind anonym. &lt;a href=\"#privacy\"&gt;Mehr erfahren&lt;/a&gt;</string>
   <string name="onboarding_analytics_switch_title">Nutzungsdaten senden</string>
   <string name="onboarding_create_account_sync">Synchronisiere deine Leselisten</string>
   <string name="onboarding_create_account_contributions">Verfolge deine Beiträge</string>
@@ -543,7 +574,6 @@
   <string name="app_shortcuts_continue_reading">Mit dem Lesen fortfahren</string>
   <string name="app_shortcuts_search">Suchen</string>
   <string name="more_trending_text">Mehr wie dies</string>
-  <string name="all_trending_text">Alle beliebten Artikel am %1$s</string>
   <string name="top_on_this_day">Beliebt am %1$s</string>
   <string name="on_this_day_card_title">Heute</string>
   <string name="more_events_text">Mehr an diesem Tag</string>

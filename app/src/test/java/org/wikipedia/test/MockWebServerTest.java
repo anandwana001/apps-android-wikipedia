@@ -5,20 +5,18 @@ import android.support.annotation.NonNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.wikipedia.dataclient.okhttp.CacheControlRequestInterceptor;
 import org.wikipedia.dataclient.okhttp.OkHttpConnectionFactory;
 import org.wikipedia.json.GsonUtil;
 
-import java.util.function.Predicate;
-
 import okhttp3.Dispatcher;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@RunWith(TestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public abstract class MockWebServerTest {
     private OkHttpClient okHttpClient;
     private final TestWebServer server = new TestWebServer();
@@ -28,11 +26,7 @@ public abstract class MockWebServerTest {
 
         // Most tests do not expect cached responses.
         //noinspection Since15
-        builder.interceptors().removeIf(new Predicate<Interceptor>() {
-            @Override public boolean test(Interceptor interceptor) {
-                return interceptor instanceof CacheControlRequestInterceptor;
-            }
-        });
+        builder.interceptors().removeIf((interceptor) -> interceptor instanceof CacheControlRequestInterceptor);
 
         okHttpClient = builder.dispatcher(new Dispatcher(new ImmediateExecutorService())).build();
         server.setUp();

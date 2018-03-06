@@ -1,8 +1,6 @@
 package org.wikipedia.media;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.wikipedia.test.TestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -12,7 +10,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(TestRunner.class)
 public class DefaultAvPlayerTest {
     private static final String PATH_A = "http://pathA";
     private static final String PATH_B = "http://pathB";

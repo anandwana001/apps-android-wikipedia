@@ -15,6 +15,7 @@ import android.text.style.TypefaceSpan;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,10 +76,10 @@ public final class StringUtil {
         int len = str.length();
         int start = 0;
         int end = len - 1;
-        while (Character.isWhitespace(str.charAt(start)) && start < len) {
+        while (start < len && Character.isWhitespace(str.charAt(start))) {
             start++;
         }
-        while (Character.isWhitespace(str.charAt(end)) && end > 0) {
+        while (end > 0 && Character.isWhitespace(str.charAt(end))) {
             end--;
         }
         if (end > start) {
@@ -117,6 +118,18 @@ public final class StringUtil {
                 .trim();
     }
 
+    // Compare two strings based on their normalized form, using the Unicode Normalization Form C.
+    // This should be used when comparing or verifying strings that will be exchanged between
+    // different platforms (iOS, desktop, etc) that may encode strings using inconsistent
+    // composition, especially for accents, diacritics, etc.
+    public static boolean normalizedEquals(@Nullable String str1, @Nullable String str2) {
+        if (str1 == null || str2 == null) {
+            return (str1 == null && str2 == null);
+        }
+        return Normalizer.normalize(str1, Normalizer.Form.NFC)
+                .equals(Normalizer.normalize(str2, Normalizer.Form.NFC));
+    }
+
     /**
      * @param source String that may contain HTML tags.
      * @return returned Spanned string that may contain spans parsed from the HTML source.
@@ -125,11 +138,13 @@ public final class StringUtil {
         if (source == null) {
             return new SpannedString("");
         }
-        if (!source.contains("<")) {
+        if (!source.contains("<") && !source.contains("&#")) {
             // If the string doesn't contain any hints of HTML tags, then skip the expensive
             // processing that fromHtml() performs.
             return new SpannedString(source);
         }
+        source = source.replaceAll("&#8206;", "\u200E")
+                .replaceAll("&#8207;", "\u200F");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
         } else {
